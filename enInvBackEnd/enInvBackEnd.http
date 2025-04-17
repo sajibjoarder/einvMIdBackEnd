@@ -1,0 +1,6 @@
+@enInvBackEnd_HostAddress = http://localhost:5285
+
+GET {{enInvBackEnd_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
