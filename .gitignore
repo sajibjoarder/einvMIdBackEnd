@@ -1,0 +1,80 @@
+## Ignore Visual Studio temporary files, build results, and user settings
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+
+## .NET Core specific
+project.lock.json
+project.fragment.lock.json
+project.assets.json
+
+# Ignore the generated files from dotnet watch
+**/tmp/
+
+## NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+*.symbols.nupkg
+
+# Backup & Report Files
+*.bak
+*.sql
+*.log
+*.vspscc
+*.vssscc
+
+# Other IDEs
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Rider
+*.sln.iml
+
+## OS generated files
+.DS_Store
+Thumbs.db
+
+# Publish output
+publish/
+out/
+
+# Test Results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+*.testresult
+
+# Others
+~$*
+*~
+*.tmp
+
+# Configuration files
+appsettings.Development.json
+secrets.json
+
+# Crash dumps
+*.dmp
+
+# Static files generated
+node_modules/
+bower_components/
+wwwroot/lib/
+wwwroot/dist/
+wwwroot/node_modules/
+
+# Include if you use migrations
+Migrations/

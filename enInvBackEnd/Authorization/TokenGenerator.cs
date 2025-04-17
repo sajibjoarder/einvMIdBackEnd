@@ -37,6 +37,33 @@ namespace enInvBackEnd.Authorization
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var key = "asdklajoi21ioe21lk321lk3w21kl3sdsaas"u8.ToArray();
+           
+            var has_lhdn = false;
+
+            using (EninvContext DBcontext = new EninvContext())
+            {
+                var result = DBcontext.CompanyUsers
+                    .Where(cu => cu.UserId == userID)
+                    .Join(DBcontext.CompanyDetails, cu => cu.CompanyId, cd => cd.CompanyId, (cu, cd) => new { cu, cd })
+                    .Join(DBcontext.LhdnProfiles, temp => temp.cd.CompanyId, lp => lp.CompanyId, (temp, lp) => new { temp.cu, temp.cd, lp })
+                    .Where(x => x.lp.ClientIdLhdn != null && x.lp.ClientSecretLhdn != null)
+                    .Select(x => new
+                    {
+                        x.cu.UserId,
+                        x.cu.CompanyId,
+                        x.cd.CompanyName,
+                        x.lp.ClientIdLhdn,
+                        x.lp.ClientSecretLhdn
+                    })
+                    .FirstOrDefault();
+
+                if (result != null)
+                {
+                    has_lhdn = true;
+                }
+              
+            }
+
 
 
             var claims = new ClaimsIdentity(new List<Claim>
@@ -45,6 +72,7 @@ namespace enInvBackEnd.Authorization
                 new Claim(JwtRegisteredClaimNames.Sid, userID.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(ClaimTypes.Role, role),
+                new Claim("has_lhdn", has_lhdn.ToString())
             });
 
             var tokenDescriptor = new SecurityTokenDescriptor
