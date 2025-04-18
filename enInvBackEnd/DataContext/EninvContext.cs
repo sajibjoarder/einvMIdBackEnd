@@ -131,6 +131,7 @@ public partial class EninvContext : DbContext
                 .HasColumnName("country_subentity_code_state_code");
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
+                .HasDefaultValueSql("NULL::character varying")
                 .HasColumnName("email");
             entity.Property(e => e.PostalZone)
                 .HasMaxLength(10)
@@ -147,6 +148,7 @@ public partial class EninvContext : DbContext
             entity.Property(e => e.Ttx)
                 .HasMaxLength(50)
                 .HasColumnName("ttx");
+            entity.Property(e => e.UserId).HasColumnName("userId");
         });
 
         modelBuilder.Entity<LhdnProfile>(entity =>
