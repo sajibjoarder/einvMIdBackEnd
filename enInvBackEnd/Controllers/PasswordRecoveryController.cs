@@ -71,7 +71,7 @@ namespace enInvBackEnd.Controllers
         {
             using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_secretKey)))
             {
-                string expiryTime = DateTime.UtcNow.AddHours(1).Ticks.ToString();
+                string expiryTime = DateTime.Now.AddHours(1).Ticks.ToString();
                 string dataToSign = $"{email}|{expiryTime}";
                 string hash = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(dataToSign)));
 
@@ -98,7 +98,7 @@ namespace enInvBackEnd.Controllers
                 long expiryTicks = long.Parse(parts[1]);
                 string providedHash = parts[2];
 
-                if (DateTime.UtcNow.Ticks > expiryTicks)
+                if (DateTime.Now.Ticks > expiryTicks)
                 {
                     return false; // Token has expired
                 }
@@ -161,7 +161,7 @@ namespace enInvBackEnd.Controllers
                             </div>
                         </div>
                     </body>
-                </html>", userName, resetUrl, DateTime.UtcNow.Year);
+                </html>", userName, resetUrl, DateTime.Now.Year);
 
                 var bodyBuilder = new BodyBuilder { HtmlBody = emailBody };
                 message.Body = bodyBuilder.ToMessageBody();

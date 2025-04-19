@@ -22,7 +22,7 @@ namespace enInvBackEnd.Controllers
                     db.LhdnProfiles.Add(profile);
                     db.SaveChanges();
 
-                    return Ok(new { message = "LHDN Profile created successfully." });
+                    return Ok(new { profile });
                 }
             }
             catch (Exception ex)

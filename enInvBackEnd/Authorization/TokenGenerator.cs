@@ -78,7 +78,7 @@ namespace enInvBackEnd.Authorization
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = claims,
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.Now.AddMinutes(1),
                 Issuer = "zam sdn bhd",
                 Audience = "zam sdn bhd",
                 SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

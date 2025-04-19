@@ -23,7 +23,7 @@ namespace enInvBackEnd.Controllers
                         return NotFound("User not found.");
 
                     companyDetail.CompanyId = Guid.NewGuid();
-                    companyDetail.CreatedAt = DateTime.UtcNow;
+                    companyDetail.CreatedAt = DateTime.Now;
                     db.CompanyDetails.Add(companyDetail);
                     db.SaveChanges();
 
@@ -36,7 +36,7 @@ namespace enInvBackEnd.Controllers
                     db.CompanyUsers.Add(companyUser);
                     db.SaveChanges();
 
-                    return Ok(new { message = "Company created and linked to user successfully." });
+                    return Ok(  companyDetail );
                 }
             }
             catch (Exception ex)
