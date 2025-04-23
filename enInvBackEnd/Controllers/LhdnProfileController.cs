@@ -3,9 +3,11 @@ using enInvBackEnd.DataModels;
 using System;
 using System.Linq;
 using enInvBackEnd.DataContext;
+using Microsoft.AspNetCore.Authorization;
 
 namespace enInvBackEnd.Controllers
 {
+    [Authorize(Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class LhdnProfileController : ControllerBase

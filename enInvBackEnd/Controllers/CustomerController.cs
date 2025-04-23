@@ -28,7 +28,7 @@ namespace enInvBackEnd.Controllers
                     db.Customers.Add(customer);
                     db.SaveChanges();
 
-                    return Ok(new { message = "Customer created successfully linked to user." });
+                    return Ok(customer);
                 }
             }
             catch (Exception ex)

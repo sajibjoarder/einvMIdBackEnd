@@ -1,80 +1,86 @@
-## Ignore Visual Studio temporary files, build results, and user settings
+############################################################
+#  .NET / Visual Studio – standard gitignore (API-only)    #
+#  Same as: dotnet new gitignore  (SDK ≥ 2.0)              #
+############################################################
+
+######## IDE-specific ########
 .vs/
 .vscode/
-*.user
+.idea/
 *.suo
+*.user
 *.userosscache
 *.sln.docstates
+*.sln.iml                # Rider
+*.userprefs              # Xamarin / MonoDevelop
+*.tss                    # Tabs Studio
+*.code-workspace
 
-## Build results
+######## Build output ########
 [Bb]in/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
 artifacts/
+TestResults/
+[Dd]ebug*/               # Debug, DebugPublic
+[Rr]elease*/             # Release
+x64/
+x86/
+*.coverage*
+*.trx
+*.dll
+*.exe
+*.pdb
+*.cache
+*.dbmdl
+*.tmp
+*.pidb
+*.binlog
 
-## .NET Core specific
+######## .NET Core & tooling ########
 project.lock.json
 project.fragment.lock.json
 project.assets.json
+*.deps.json
+*.runtimeconfig.json
+.ScaffoldingReadMe.txt
+BenchmarkDotNet.Artifacts/
 
-# Ignore the generated files from dotnet watch
-**/tmp/
+######## Configuration & secrets ########
+appsettings.Development.json
+launchSettings.json      # machine-specific URLs & ports
+secrets.json
 
-## NuGet Packages
+######## NuGet ########
 *.nupkg
 *.snupkg
-packages/
 *.symbols.nupkg
+packages/
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
 
-# Backup & Report Files
-*.bak
-*.sql
-*.log
-*.vspscc
-*.vssscc
+######## Entity Framework migrations (optional) ########
+# Migrations/
 
-# Other IDEs
-.idea/
-*.sublime-workspace
-*.sublime-project
-
-# Rider
-*.sln.iml
-
-## OS generated files
-.DS_Store
-Thumbs.db
-
-# Publish output
+######## Publish output ########
 publish/
 out/
 
-# Test Results
-TestResults/
-*.trx
-*.coverage
-*.coveragexml
-*.testresult
+######## SQL / backups / reports ########
+*.bak
+*.sql
+*.mdf
+*.ldf
+*.ndf
+*.rptproj.*
+*.rdl.data
 
-# Others
+######## Miscellaneous ########
+.DS_Store
+Thumbs.db
+*.dmp
 ~$*
 *~
-*.tmp
-
-# Configuration files
-appsettings.Development.json
-secrets.json
-
-# Crash dumps
-*.dmp
-
-# Static files generated
-node_modules/
-bower_components/
-wwwroot/lib/
-wwwroot/dist/
-wwwroot/node_modules/
-
-# Include if you use migrations
-Migrations/

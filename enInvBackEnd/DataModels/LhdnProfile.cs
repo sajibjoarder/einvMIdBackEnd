@@ -13,9 +13,9 @@ public partial class LhdnProfile
 
     public string? ClientSecretLhdn { get; set; }
 
-    public string GrantTypeLhdn { get; set; } = null!;
+    public string? GrantTypeLhdn { get; set; }
 
-    public string ScopeLhdn { get; set; } = null!;
+    public string? ScopeLhdn { get; set; }
 
-    public string IntrigrationType { get; set; } = null!;
+    public string? IntrigrationType { get; set; }
 }

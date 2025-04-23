@@ -72,7 +72,7 @@ namespace enInvBackEnd.Authorization
                 new Claim(JwtRegisteredClaimNames.Sid, userID.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(ClaimTypes.Role, role),
-                new Claim("has_lhdn", has_lhdn.ToString())
+                new Claim("has_lhdn", has_lhdn.ToString()),
             });
 
             var tokenDescriptor = new SecurityTokenDescriptor
