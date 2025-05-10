@@ -12,9 +12,29 @@ namespace enInvBackEnd.Controllers
 {
     [Route("api/users")]
     [ApiController]
-    [Authorize(Roles = "User")] // Only User roles can access this controller
+   // [Authorize(Roles = "User")] // Only User roles can access this controller
     public class UsersController : ControllerBase
     {
+
+
+        // GET: api/users/{id}
+        [HttpGet("{uid}")]
+        public async Task<IActionResult> GetUser(Guid uid)
+        {
+            using (var db = new EninvContext())
+            {
+                var user = await db.Users.FirstOrDefaultAsync(x=>x.Id==uid);
+
+                if (user == null)
+                    return NotFound(new { message = "User not found." });
+
+                return Ok(user);
+            }
+        }
+
+
+
+
         // PUT: api/users/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserRequest req)

@@ -1,4 +1,5 @@
 using enInvBackEnd.Authorization;
+using enInvBackEnd.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.IdentityModel.Tokens;
@@ -24,6 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<TokenGenerator>();
+builder.Services.AddHttpClient<DocumentSubmissionService>();
 
 // Configure JWT authentication
 var key = Encoding.UTF8.GetBytes("asdklajoi21ioe21lk321lk3w21kl3sdsaas");

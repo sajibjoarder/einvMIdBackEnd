@@ -331,6 +331,37 @@
         }
       }
     },
+    "/api/Invoices": {
+      "post": {
+        "tags": [
+          "Invoices"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/LhdnProfile/create": {
       "post": {
         "tags": [
@@ -566,6 +597,71 @@
         }
       }
     },
+    "/api/users/{uid}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/WeatherForecast": {
       "get": {
         "tags": [
@@ -608,6 +704,75 @@
   },
   "components": {
     "schemas": {
+      "AdditionalDoc": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "documentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "postal": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "line": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AllowanceCharge": {
+        "type": "object",
+        "properties": {
+          "chargeIndicator": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "multiplierFactor": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CompanyDetail": {
         "type": "object",
         "properties": {
@@ -687,6 +852,20 @@
         },
         "additionalProperties": false
       },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "telephone": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Customer": {
         "type": "object",
         "properties": {
@@ -754,6 +933,217 @@
         },
         "additionalProperties": false
       },
+      "CustomerParty": {
+        "required": [
+          "party"
+        ],
+        "type": "object",
+        "properties": {
+          "additionalAccountId": {
+            "type": "string",
+            "nullable": true
+          },
+          "party": {
+            "$ref": "#/components/schemas/Party"
+          }
+        },
+        "additionalProperties": false
+      },
+      "InvoiceLine": {
+        "required": [
+          "description",
+          "id",
+          "lineExtension",
+          "quantity"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "unitCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "lineExtension": {
+            "type": "number",
+            "format": "double"
+          },
+          "allowances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllowanceCharge"
+            },
+            "nullable": true
+          },
+          "tax": {
+            "$ref": "#/components/schemas/TaxTotal"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "originCountryCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "commodityCodePtc": {
+            "type": "string",
+            "nullable": true
+          },
+          "commodityCodeClass": {
+            "type": "string",
+            "nullable": true
+          },
+          "priceAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "itemPriceExtension": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "InvoiceModel": {
+        "required": [
+          "currencyCode",
+          "customer",
+          "id",
+          "issueDate",
+          "lines",
+          "monetaryTotal",
+          "supplier",
+          "taxCurrencyCode",
+          "taxTotal"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "issueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "issueTime": {
+            "type": "string",
+            "format": "date-span"
+          },
+          "invoiceTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeCodeVer": {
+            "type": "string",
+            "nullable": true
+          },
+          "currencyCode": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "taxCurrencyCode": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "invoicePeriod": {
+            "$ref": "#/components/schemas/InvoicePeriod"
+          },
+          "billingReferenceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalDocs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalDoc"
+            },
+            "nullable": true
+          },
+          "supplier": {
+            "$ref": "#/components/schemas/SupplierParty"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/CustomerParty"
+          },
+          "paymentMeans": {
+            "$ref": "#/components/schemas/PaymentMeans"
+          },
+          "paymentTermsNote": {
+            "type": "string",
+            "nullable": true
+          },
+          "prepaidPayments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PrepaidPayment"
+            },
+            "nullable": true
+          },
+          "headerCharges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllowanceCharge"
+            },
+            "nullable": true
+          },
+          "taxTotal": {
+            "$ref": "#/components/schemas/TaxTotal"
+          },
+          "monetaryTotal": {
+            "$ref": "#/components/schemas/MonetaryTotal"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvoiceLine"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "InvoicePeriod": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LegalEntity": {
+        "required": [
+          "registrationName"
+        ],
+        "type": "object",
+        "properties": {
+          "registrationName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LhdnProfile": {
         "type": "object",
         "properties": {
@@ -815,6 +1205,123 @@
         },
         "additionalProperties": false
       },
+      "MonetaryTotal": {
+        "type": "object",
+        "properties": {
+          "lineExtensionAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxExclusiveAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxInclusiveAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "allowanceTotalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "chargeTotalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "payableRoundingAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "payableAmount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Party": {
+        "required": [
+          "legalEntity"
+        ],
+        "type": "object",
+        "properties": {
+          "industryCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "industryName": {
+            "type": "string",
+            "nullable": true
+          },
+          "identifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartyId"
+            },
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "legalEntity": {
+            "$ref": "#/components/schemas/LegalEntity"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/Contact"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartyId": {
+        "type": "object",
+        "properties": {
+          "scheme": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentMeans": {
+        "type": "object",
+        "properties": {
+          "paymentMeansCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "payeeAccountId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrepaidPayment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "paidAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "paidDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "paidTime": {
+            "type": "string",
+            "format": "date-span"
+          }
+        },
+        "additionalProperties": false
+      },
       "ResetPasswordModel": {
         "type": "object",
         "properties": {
@@ -851,6 +1358,70 @@
             "nullable": true
           },
           "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupplierParty": {
+        "required": [
+          "party"
+        ],
+        "type": "object",
+        "properties": {
+          "additionalAccountId": {
+            "type": "string",
+            "nullable": true
+          },
+          "party": {
+            "$ref": "#/components/schemas/Party"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaxTotal": {
+        "type": "object",
+        "properties": {
+          "taxableAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxCategoryId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxSchemeId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "roll": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
             "type": "string",
             "nullable": true
           }
