@@ -44,11 +44,13 @@ namespace enInvBackEnd.Controllers
             Directory.CreateDirectory(invoicesDir);
 
             // Sanitize the ID for a file name
+          
             string safeId = string.Concat(
-                (dto.Id ?? Guid.NewGuid().ToString())
-                .Where(c => !Path.GetInvalidFileNameChars().Contains(c)));
+                                (dto.Id ?? "Invoice")                     // fallback if dto.Id is null/empty
+                                .Where(c => !Path.GetInvalidFileNameChars().Contains(c)));
 
-            string fileName = $"{safeId}.xml";
+            string fileName = $"{safeId}_{Guid.NewGuid():N}.xml";   // :N format → 32-char hex without dashes
+
             string fullPath = Path.Combine(invoicesDir, fileName);
 
             // Write the XML to disk
@@ -58,6 +60,8 @@ namespace enInvBackEnd.Controllers
             }
 
             // inside Create() – after you save fullPath
+
+
             // HttpResponseMessage resp =await _submissionSvc.SubmitXmlAsync(fullPath, "142250926443");
             // string respBody = await resp.Content.ReadAsStringAsync();
 
