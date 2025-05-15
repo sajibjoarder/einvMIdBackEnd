@@ -182,7 +182,7 @@ namespace enInvBackEnd.Controllers
         public bool ChargeIndicator { get; set; }
         public string Reason { get; set; } = "";
         public decimal Amount { get; set; }
-        public decimal? MultiplierFactor { get; set; }   // nullable
+        public decimal? MultiplierFactor { get; set; }   
     }
 
     public sealed class TaxTotal

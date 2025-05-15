@@ -26,6 +26,8 @@ public partial class EninvContext : DbContext
 
     public virtual DbSet<LhdnToken> LhdnTokens { get; set; }
 
+    public virtual DbSet<MsicCode> MsicCodes { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserType> UserTypes { get; set; }
@@ -201,6 +203,21 @@ public partial class EninvContext : DbContext
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("issueddate_time");
             entity.Property(e => e.Token).HasColumnName("token");
+        });
+
+        modelBuilder.Entity<MsicCode>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("msic_code_pkey");
+
+            entity.ToTable("msic_code");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.Code).HasColumnName("code");
+            entity.Property(e => e.Name)
+                .HasColumnType("character varying")
+                .HasColumnName("name");
         });
 
         modelBuilder.Entity<User>(entity =>
