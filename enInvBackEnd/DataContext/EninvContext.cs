@@ -74,6 +74,9 @@ public partial class EninvContext : DbContext
                 .HasColumnType("character varying")
                 .HasColumnName("msic_code");
             entity.Property(e => e.PostCode).HasColumnName("post_code");
+            entity.Property(e => e.RegistratedCompanyId)
+                .HasColumnType("character varying")
+                .HasColumnName("Registrated_CompanyId");
             entity.Property(e => e.SstNumber)
                 .HasColumnType("character varying")
                 .HasColumnName("sstNumber");

@@ -123,6 +123,7 @@ namespace enInvBackEnd.Controllers
                     company.StateCode = updatedCompany.StateCode;
                     company.PostCode = updatedCompany.PostCode;
                     company.MsicCode = updatedCompany.MsicCode;
+                    company.RegistratedCompanyId = updatedCompany.RegistratedCompanyId;
                     // Do not update CreatedAt
 
                     db.SaveChanges();

@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|c:\\users\\sajib\\downloads\\einvmidbackend\\einvmidbackend\\eninvbackend\\controllers\\companycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\controllers\\companycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|c:\\users\\sajib\\downloads\\einvmidbackend\\einvmidbackend\\eninvbackend\\controllers\\invoicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\controllers\\invoicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -47,19 +51,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "CompanyController.cs",
+              "DocumentMoniker": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\CompanyController.cs",
+              "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\CompanyController.cs",
+              "ToolTip": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\CompanyController.cs",
+              "RelativeToolTip": "enInvBackEnd\\Controllers\\CompanyController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T08:15:37.408Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "InvoicesController.cs",
               "DocumentMoniker": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\InvoicesController.cs",
               "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\InvoicesController.cs",
               "ToolTip": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\InvoicesController.cs",
               "RelativeToolTip": "enInvBackEnd\\Controllers\\InvoicesController.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAADAAAABKAAAAAAAAAA==",
+              "ViewState": "AgIAABcAAAAAAAAAAAAQwEUAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-10T07:30:06.166Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Program.cs",
               "RelativeDocumentMoniker": "enInvBackEnd\\Program.cs",
@@ -67,12 +84,11 @@
               "RelativeToolTip": "enInvBackEnd\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-10T07:06:39.647Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-10T07:06:39.647Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "DocumentSubmissionService.cs",
               "DocumentMoniker": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Services\\DocumentSubmissionService.cs",
               "RelativeDocumentMoniker": "enInvBackEnd\\Services\\DocumentSubmissionService.cs",
@@ -80,8 +96,7 @@
               "RelativeToolTip": "enInvBackEnd\\Services\\DocumentSubmissionService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-10T07:04:33.471Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-10T07:04:33.471Z"
             }
           ]
         }

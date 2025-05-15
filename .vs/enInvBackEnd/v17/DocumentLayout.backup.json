@@ -52,7 +52,7 @@
               "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\InvoicesController.cs",
               "ToolTip": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\InvoicesController.cs",
               "RelativeToolTip": "enInvBackEnd\\Controllers\\InvoicesController.cs",
-              "ViewState": "AgIAANoAAAAAAAAAAAAYwPUAAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAABcAAAAAAAAAAAAQwEUAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-10T07:30:06.166Z",
               "EditorCaption": ""
@@ -67,8 +67,7 @@
               "RelativeToolTip": "enInvBackEnd\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-10T07:06:39.647Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-10T07:06:39.647Z"
             },
             {
               "$type": "Document",
@@ -80,8 +79,7 @@
               "RelativeToolTip": "enInvBackEnd\\Services\\DocumentSubmissionService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-10T07:04:33.471Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-10T07:04:33.471Z"
             }
           ]
         }

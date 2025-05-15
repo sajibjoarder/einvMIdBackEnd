@@ -40,4 +40,6 @@ public partial class CompanyDetail
     public string? MsicCode { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    public string? RegistratedCompanyId { get; set; }
 }
