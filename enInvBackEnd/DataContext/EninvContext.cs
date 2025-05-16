@@ -20,6 +20,8 @@ public partial class EninvContext : DbContext
 
     public virtual DbSet<CompanyUser> CompanyUsers { get; set; }
 
+    public virtual DbSet<CompanyWithMsic> CompanyWithMsics { get; set; }
+
     public virtual DbSet<Customer> Customers { get; set; }
 
     public virtual DbSet<LhdnProfile> LhdnProfiles { get; set; }
@@ -72,9 +74,7 @@ public partial class EninvContext : DbContext
             entity.Property(e => e.IdType)
                 .HasColumnType("character varying")
                 .HasColumnName("idType");
-            entity.Property(e => e.MsicCode)
-                .HasColumnType("character varying")
-                .HasColumnName("msic_code");
+            entity.Property(e => e.MsicCode).HasColumnName("msic_code");
             entity.Property(e => e.PostCode).HasColumnName("post_code");
             entity.Property(e => e.RegistratedCompanyId)
                 .HasColumnType("character varying")
@@ -103,6 +103,63 @@ public partial class EninvContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
+        });
+
+        modelBuilder.Entity<CompanyWithMsic>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("CompanyWithMSIC");
+
+            entity.Property(e => e.AddressL1).HasColumnType("character varying");
+            entity.Property(e => e.AddressL2).HasColumnType("character varying");
+            entity.Property(e => e.City)
+                .HasColumnType("character varying")
+                .HasColumnName("city");
+            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
+            entity.Property(e => e.CompanyName).HasColumnType("character varying");
+            entity.Property(e => e.ContectNumber)
+                .HasColumnType("character varying")
+                .HasColumnName("contectNumber");
+            entity.Property(e => e.Country)
+                .HasColumnType("character varying")
+                .HasColumnName("country");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Email)
+                .HasColumnType("character varying")
+                .HasColumnName("email");
+            entity.Property(e => e.IdNumber)
+                .HasColumnType("character varying")
+                .HasColumnName("idNumber");
+            entity.Property(e => e.IdType)
+                .HasColumnType("character varying")
+                .HasColumnName("idType");
+            entity.Property(e => e.MsicCode).HasColumnName("msic_code");
+            entity.Property(e => e.MsicCodeId).HasColumnName("msic_code_id");
+            entity.Property(e => e.MsicName)
+                .HasColumnType("character varying")
+                .HasColumnName("msic_name");
+            entity.Property(e => e.PostCode).HasColumnName("post_code");
+            entity.Property(e => e.RegistratedCompanyId)
+                .HasColumnType("character varying")
+                .HasColumnName("Registrated_CompanyId");
+            entity.Property(e => e.SstNumber)
+                .HasColumnType("character varying")
+                .HasColumnName("sstNumber");
+            entity.Property(e => e.State)
+                .HasColumnType("character varying")
+                .HasColumnName("state");
+            entity.Property(e => e.StateCode)
+                .HasColumnType("character varying")
+                .HasColumnName("state_code");
+            entity.Property(e => e.Taxid)
+                .HasColumnType("character varying")
+                .HasColumnName("taxid");
+            entity.Property(e => e.TourismTaxNo)
+                .HasColumnType("character varying")
+                .HasColumnName("tourism_tax_no");
         });
 
         modelBuilder.Entity<Customer>(entity =>

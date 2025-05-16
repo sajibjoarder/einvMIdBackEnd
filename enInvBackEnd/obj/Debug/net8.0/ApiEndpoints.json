@@ -281,6 +281,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "YourProject.Api.Controllers.MsicCodesController",
+    "Method": "GetAll",
+    "RelativePath": "api/MsicCodes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "enInvBackEnd.Controllers.PasswordRecoveryController",
     "Method": "RequestPasswordReset",
     "RelativePath": "api/PasswordRecovery/request-reset",

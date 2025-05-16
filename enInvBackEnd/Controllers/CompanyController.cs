@@ -55,7 +55,9 @@ namespace enInvBackEnd.Controllers
             {
                 using (var db = new EninvContext())
                 {
-                    var company = db.CompanyDetails.FirstOrDefault(c => c.CompanyId == companyId);
+                    var company = db.CompanyWithMsics
+                        .FirstOrDefault(c => c.CompanyId == companyId);
+
                     if (company == null)
                         return NotFound("Company not found.");
 
@@ -67,6 +69,7 @@ namespace enInvBackEnd.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
 
         // READ (Get all companies linked to a user)
         [HttpGet("get-companies-for-user/{userId}")]
@@ -81,8 +84,8 @@ namespace enInvBackEnd.Controllers
                         .Select(cu => cu.CompanyId)
                         .ToList();
 
-                    var companies = db.CompanyDetails
-                        .Where(c => companyIds.Contains(c.CompanyId))
+                    var companies = db.CompanyWithMsics
+                        .Where(c => companyIds.Contains(c.CompanyId ?? Guid.Empty))
                         .ToList();
 
                     return Ok(companies);
@@ -93,6 +96,7 @@ namespace enInvBackEnd.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
 
         // UPDATE
         [HttpPut("update-company/{companyId}")]

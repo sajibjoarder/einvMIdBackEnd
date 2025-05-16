@@ -504,6 +504,18 @@
         }
       }
     },
+    "/api/MsicCodes": {
+      "get": {
+        "tags": [
+          "MsicCodes"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/PasswordRecovery/request-reset": {
       "post": {
         "tags": [
@@ -841,13 +853,18 @@
             "format": "int32",
             "nullable": true
           },
-          "msicCode": {
-            "type": "string",
-            "nullable": true
-          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "registratedCompanyId": {
+            "type": "string",
+            "nullable": true
+          },
+          "msicCode": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           }
         },
         "additionalProperties": false

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace enInvBackEnd.DataModels;
 
-public partial class CompanyDetail
+public partial class CompanyWithMsic
 {
-    public Guid CompanyId { get; set; }
+    public Guid? CompanyId { get; set; }
 
-    public string CompanyName { get; set; } = null!;
+    public string? CompanyName { get; set; }
 
     public string? AddressL1 { get; set; }
 
@@ -37,9 +37,13 @@ public partial class CompanyDetail
 
     public int? PostCode { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     public string? RegistratedCompanyId { get; set; }
 
-    public Guid? MsicCode { get; set; }
+    public Guid? MsicCodeId { get; set; }
+
+    public int? MsicCode { get; set; }
+
+    public string? MsicName { get; set; }
 }
