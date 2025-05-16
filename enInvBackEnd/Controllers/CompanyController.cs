@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace enInvBackEnd.Controllers
 {
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class CompanyController : ControllerBase

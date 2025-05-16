@@ -21,19 +21,6 @@
           "SelectedChildIndex": 6,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CompanyDetail.cs",
-              "DocumentMoniker": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\DataModels\\CompanyDetail.cs",
-              "RelativeDocumentMoniker": "enInvBackEnd\\DataModels\\CompanyDetail.cs",
-              "ToolTip": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\DataModels\\CompanyDetail.cs",
-              "RelativeToolTip": "enInvBackEnd\\DataModels\\CompanyDetail.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAA1wCsAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-16T10:13:47.27Z",
-              "EditorCaption": ""
-            },
-            {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
@@ -55,13 +42,26 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CompanyDetail.cs",
+              "DocumentMoniker": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\DataModels\\CompanyDetail.cs",
+              "RelativeDocumentMoniker": "enInvBackEnd\\DataModels\\CompanyDetail.cs",
+              "ToolTip": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\DataModels\\CompanyDetail.cs",
+              "RelativeToolTip": "enInvBackEnd\\DataModels\\CompanyDetail.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAA1wCsAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T10:13:47.27Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "CompanyController.cs",
               "DocumentMoniker": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\CompanyController.cs",
               "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\CompanyController.cs",
               "ToolTip": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\CompanyController.cs",
               "RelativeToolTip": "enInvBackEnd\\Controllers\\CompanyController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAACEAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-16T10:13:48.962Z",
               "EditorCaption": ""
