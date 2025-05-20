@@ -10,7 +10,7 @@ using enInvBackEnd.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
-namespace enInvBackEnd.Controllers           
+namespace enInvBackEnd.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -20,15 +20,15 @@ namespace enInvBackEnd.Controllers
 
         private readonly IWebHostEnvironment _env;
 
-        public InvoicesController(IWebHostEnvironment env,DocumentSubmissionService submissionSvc)
+        public InvoicesController(IWebHostEnvironment env, DocumentSubmissionService submissionSvc)
         {
             _env = env;
             _submissionSvc = submissionSvc;
         }
 
         // POST: api/invoices
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] InvoiceModel dto)
+        [HttpPost("invoiceSubmit/{company_id}")]
+        public async Task<IActionResult> Create(Guid company_id, [FromBody] InvoiceModel dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -44,10 +44,8 @@ namespace enInvBackEnd.Controllers
             Directory.CreateDirectory(invoicesDir);
 
             // Sanitize the ID for a file name
-          
-            string safeId = string.Concat(
-                                (dto.Id ?? "Invoice")                     // fallback if dto.Id is null/empty
-                                .Where(c => !Path.GetInvalidFileNameChars().Contains(c)));
+
+            string safeId = string.Concat((dto.Id ?? "Invoice").Where(c => !Path.GetInvalidFileNameChars().Contains(c)));
 
             string fileName = $"{safeId}_{Guid.NewGuid():N}.xml";   // :N format → 32-char hex without dashes
 
@@ -62,12 +60,12 @@ namespace enInvBackEnd.Controllers
             // inside Create() – after you save fullPath
 
 
-            // HttpResponseMessage resp =await _submissionSvc.SubmitXmlAsync(fullPath, "142250926443");
-            // string respBody = await resp.Content.ReadAsStringAsync();
+             HttpResponseMessage resp =await _submissionSvc.SubmitXmlAsync(fullPath, "142250926443",company_id);
+             string respBody = await resp.Content.ReadAsStringAsync();
 
             /* ---------- Return 201 Created ---------- */
             // Not a public URL, but the absolute path on server
-            return Created(string.Empty, new { fileName, fullPath });
+            return Created(string.Empty, new { fileName, fullPath,resp });
         }
 
     }
@@ -182,7 +180,7 @@ namespace enInvBackEnd.Controllers
         public bool ChargeIndicator { get; set; }
         public string Reason { get; set; } = "";
         public decimal Amount { get; set; }
-        public decimal? MultiplierFactor { get; set; }   
+        public decimal? MultiplierFactor { get; set; }
     }
 
     public sealed class TaxTotal

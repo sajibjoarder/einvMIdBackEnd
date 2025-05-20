@@ -182,11 +182,16 @@
   {
     "ContainingType": "enInvBackEnd.Controllers.InvoicesController",
     "Method": "Create",
-    "RelativePath": "api/Invoices",
+    "RelativePath": "api/Invoices/invoiceSubmit/{company_id}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "company_id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
       {
         "Name": "dto",
         "Type": "enInvBackEnd.Controllers.InvoiceModel",

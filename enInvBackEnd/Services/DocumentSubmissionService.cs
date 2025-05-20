@@ -7,35 +7,36 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Configuration;
 
 namespace enInvBackEnd.Services
 {
-    /// <summary>
-    /// Wraps the call to LHDN / MyInvois “document submissions” API.
-    /// </summary>
+
     public sealed class DocumentSubmissionService
     {
         private readonly HttpClient _http;
-        private readonly string _endpoint=  "https://preprod-api.myinvois.hasil.gov.my/api/v1.0/documentsubmissions/";
-        private readonly string _bearerToken = "";
+        private string _endpoint=  "https://preprod-api.myinvois.hasil.gov.my/api/v1.0/documentsubmissions/";
+        private string _bearerToken = string.Empty;
 
         public DocumentSubmissionService(HttpClient http, IConfiguration cfg)
         {
             _http = http;
             //_endpoint = cfg["Lhdn:Endpoint"]
             //               ?? throw new ArgumentNullException("Lhdn:Endpoint (appsettings)");
-            //_bearerToken = cfg["Lhdn:BearerToken"]
-            //               ?? throw new ArgumentNullException("Lhdn:BearerToken (appsettings)");
+            //_bearerToken = new LhdnTokenManager.GetOrCreateTokenAsync();
         }
 
-        /// <summary>
-        /// Converts the XML file to base-64, hashes it with SHA-256, and
-        /// POSTs the JSON payload to LHDN.  Returns the raw HttpResponseMessage.
-        /// </summary>
-        public async Task<HttpResponseMessage> SubmitXmlAsync(string xmlFilePath,
-                                                              string codeNumber)
+
+        public async Task<HttpResponseMessage> SubmitXmlAsync(string xmlFilePath,string codeNumber,Guid companyId)
         {
+            var toakenManeger = new LhdnTokenManager();
+            _bearerToken = (await toakenManeger.GetOrCreateTokenAsync(companyId)).Token;
+
+           
+
+            //return (new HttpResponseMessage());
+
             if (!File.Exists(xmlFilePath))
                 throw new FileNotFoundException("Invoice XML not found.", xmlFilePath);
 
@@ -45,9 +46,7 @@ namespace enInvBackEnd.Services
 
             /* ---- SHA-256 of the base-64 string ---- */
             using SHA256 sha = SHA256.Create();
-            string sha256 = BitConverter.ToString(
-                                sha.ComputeHash(Encoding.UTF8.GetBytes(base64Body)))
-                                .Replace("-", "");
+            string sha256 = BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(base64Body))).Replace("-", "");
 
             /* ---- build payload ---- */
             var payload = new
@@ -73,8 +72,7 @@ namespace enInvBackEnd.Services
             {
                 Content = content
             };
-            request.Headers.Authorization =
-                new AuthenticationHeaderValue("Bearer", _bearerToken);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _bearerToken);
 
             /* ---- send & return ---- */
             return await _http.SendAsync(request);

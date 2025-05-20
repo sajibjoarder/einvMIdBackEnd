@@ -331,10 +331,21 @@
         }
       }
     },
-    "/api/Invoices": {
+    "/api/Invoices/invoiceSubmit/{company_id}": {
       "post": {
         "tags": [
           "Invoices"
+        ],
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
         ],
         "requestBody": {
           "content": {
