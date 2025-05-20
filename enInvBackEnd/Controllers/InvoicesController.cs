@@ -65,7 +65,7 @@ namespace enInvBackEnd.Controllers
 
             /* ---------- Return 201 Created ---------- */
             // Not a public URL, but the absolute path on server
-            return Created(string.Empty, new { fileName, fullPath,resp });
+            return Created(string.Empty, new { fileName, fullPath,respBody });
         }
 
     }
