@@ -157,6 +157,48 @@
         }
       }
     },
+    "/api/Consolidation/submit/{company_id}": {
+      "post": {
+        "tags": [
+          "Consolidation"
+        ],
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsolidationInvoiceModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsolidationInvoiceModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsolidationInvoiceModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Customer/create-customer-for-user": {
       "post": {
         "tags": [
@@ -876,6 +918,331 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsolidationAddress": {
+        "type": "object",
+        "properties": {
+          "cityName": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalZone": {
+            "type": "string",
+            "nullable": true
+          },
+          "countrySubentityCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "countryIdentificationCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsolidationContact": {
+        "type": "object",
+        "properties": {
+          "telephone": {
+            "type": "string",
+            "nullable": true
+          },
+          "electronicMail": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsolidationCustomerParty": {
+        "required": [
+          "party"
+        ],
+        "type": "object",
+        "properties": {
+          "additionalAccountID": {
+            "type": "string",
+            "nullable": true
+          },
+          "party": {
+            "$ref": "#/components/schemas/ConsolidationParty"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsolidationInvoiceLine": {
+        "required": [
+          "description",
+          "id",
+          "itemPriceExtensionAmount",
+          "lineExtensionAmount",
+          "priceAmount",
+          "quantity",
+          "taxTotal"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "lineExtensionAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxTotal": {
+            "$ref": "#/components/schemas/ConsolidationTaxTotal"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "originCountryIdentificationCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemClassificationCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "priceAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "itemPriceExtensionAmount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsolidationInvoiceModel": {
+        "required": [
+          "currencyCode",
+          "customer",
+          "id",
+          "invoiceTypeCode",
+          "issueDate",
+          "lines",
+          "monetaryTotal",
+          "supplier",
+          "taxCurrencyCode",
+          "taxTotal"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "issueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "issueTime": {
+            "type": "string",
+            "format": "date-span"
+          },
+          "invoiceTypeCode": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "typeCodeVer": {
+            "type": "string",
+            "nullable": true
+          },
+          "currencyCode": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "taxCurrencyCode": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "supplier": {
+            "$ref": "#/components/schemas/ConsolidationSupplierParty"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/ConsolidationCustomerParty"
+          },
+          "taxTotal": {
+            "$ref": "#/components/schemas/ConsolidationTaxTotal"
+          },
+          "monetaryTotal": {
+            "$ref": "#/components/schemas/ConsolidationMonetaryTotal"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConsolidationInvoiceLine"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsolidationLegalEntity": {
+        "required": [
+          "registrationName"
+        ],
+        "type": "object",
+        "properties": {
+          "registrationName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "companyID": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsolidationMonetaryTotal": {
+        "required": [
+          "lineExtensionAmount",
+          "payableAmount",
+          "taxExclusiveAmount",
+          "taxInclusiveAmount"
+        ],
+        "type": "object",
+        "properties": {
+          "lineExtensionAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxExclusiveAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxInclusiveAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "allowanceTotalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "chargeTotalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "payableRoundingAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "payableAmount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsolidationParty": {
+        "required": [
+          "legalEntity"
+        ],
+        "type": "object",
+        "properties": {
+          "industryCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "industryName": {
+            "type": "string",
+            "nullable": true
+          },
+          "identifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConsolidationPartyId"
+            },
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/ConsolidationAddress"
+          },
+          "legalEntity": {
+            "$ref": "#/components/schemas/ConsolidationLegalEntity"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/ConsolidationContact"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsolidationPartyId": {
+        "required": [
+          "schemeID",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "schemeID": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "value": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsolidationSupplierParty": {
+        "required": [
+          "party"
+        ],
+        "type": "object",
+        "properties": {
+          "additionalAccountID": {
+            "type": "string",
+            "nullable": true
+          },
+          "party": {
+            "$ref": "#/components/schemas/ConsolidationParty"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsolidationTaxTotal": {
+        "required": [
+          "taxableAmount",
+          "taxAmount",
+          "taxCategoryId",
+          "taxSchemeId"
+        ],
+        "type": "object",
+        "properties": {
+          "taxAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxableAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxCategoryId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "taxSchemeId": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false

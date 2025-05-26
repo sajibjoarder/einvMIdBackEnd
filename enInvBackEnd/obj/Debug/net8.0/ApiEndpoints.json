@@ -90,6 +90,27 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "enInvBackEnd.Controllers.ConsolidationController",
+    "Method": "Create",
+    "RelativePath": "api/Consolidation/submit/{company_id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "company_id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "enInvBackEnd.Controllers.ConsolidationInvoiceModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "enInvBackEnd.Controllers.CustomerController",
     "Method": "CreateCustomerForUser",
     "RelativePath": "api/Customer/create-customer-for-user",

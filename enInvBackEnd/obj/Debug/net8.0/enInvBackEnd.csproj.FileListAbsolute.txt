@@ -500,12 +500,6 @@ C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\ne
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets\msbuild.enInvBackEnd.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets\msbuild.enInvBackEnd.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets\msbuild.build.enInvBackEnd.props
-C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.enInvBackEnd.props
-C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.enInvBackEnd.props
-C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.pack.json
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\enInvBac.00F61420.Up2Date
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\enInvBackEnd.dll
@@ -513,3 +507,4 @@ C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\ne
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\enInvBackEnd.pdb
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\enInvBackEnd.genruntimeconfig.cache
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\ref\enInvBackEnd.dll
+C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.build.json.cache
