@@ -35,10 +35,10 @@ namespace enInvBackEnd.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            /* ── build XML ─────────────────────────── */
+            /* ---------- build XML ---------- */
             var xmlDoc = new ConsolidationInvoiceBuilder().Build(dto);
 
-            /* ── save to disk ──────────────────────── */
+            /* ---------- save ---------- */
             var outDir = Path.Combine(_env.ContentRootPath, "consolidations");
             Directory.CreateDirectory(outDir);
 
@@ -50,17 +50,16 @@ namespace enInvBackEnd.Controllers
             await using (var fs = System.IO.File.Create(fullPath))
                 xmlDoc.Save(fs);
 
-            /* ── submit to LHDN ────────────────────── */
+            /* ---------- submit ---------- */
             HttpResponseMessage resp = await _submissionSvc
-                .SubmitXmlAsync(fullPath, "142250926443", company_id);   // hard-code supplierTaxID (example)
+                .SubmitXmlAsync(fullPath, "142250926443", company_id); // example tax-ID
             string respBody = await resp.Content.ReadAsStringAsync();
 
             return Created(string.Empty, new { fileName, fullPath, respBody });
         }
     }
 
-    #region ───────────── DTO / POCO ─────────────
-
+    #region ───────── DTO / POCOs ─────────
     public sealed class ConsolidationInvoiceModel
     {
         [Required] public string Id { get; set; } = "";
@@ -81,21 +80,16 @@ namespace enInvBackEnd.Controllers
 
     public abstract class ConsolidationPartyBase
     {
-        // kept for backend use (not written to XML)
-        public string? AdditionalAccountID { get; set; }
-
+        public string? AdditionalAccountID { get; set; }   // kept for backend use only
         [Required] public ConsolidationParty Party { get; set; } = new();
     }
-
     public sealed class ConsolidationSupplierParty : ConsolidationPartyBase { }
 
     public sealed class ConsolidationParty
     {
         public string? IndustryCode { get; set; }
         public string? IndustryName { get; set; }
-
         public List<ConsolidationPartyId> Identifications { get; set; } = new();
-
         public ConsolidationAddress? Address { get; set; }
         [Required] public ConsolidationLegalEntity LegalEntity { get; set; } = new();
         public ConsolidationContact? Contact { get; set; }
@@ -165,17 +159,16 @@ namespace enInvBackEnd.Controllers
     }
     #endregion
 
-    #region ───────────── XML Builder ─────────────
+    #region ───────── XML Builder ─────────
     internal sealed class ConsolidationInvoiceBuilder
     {
         private readonly XNamespace ubl = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2";
         private readonly XNamespace cac = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2";
         private readonly XNamespace cbc = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2";
 
-        /* helper to attach currencyID="MYR" */
-        private XElement Money(string tag, decimal value) =>
-            new XElement(cbc + tag, new XAttribute("currencyID", "MYR"), value);
-        private static XElement E(XName name, object val) => new(name, val);
+        private XElement Money(string tag, decimal v)
+            => new XElement(cbc + tag, new XAttribute("currencyID", "MYR"), v);
+        private static XElement E(XName n, object v) => new(n, v);
 
         public XDocument Build(ConsolidationInvoiceModel m)
         {
@@ -192,25 +185,20 @@ namespace enInvBackEnd.Controllers
                 E(cbc + "DocumentCurrencyCode", m.CurrencyCode),
                 E(cbc + "TaxCurrencyCode", m.TaxCurrencyCode),
 
-                /* supplier + fixed customer */
                 BuildSupplier(m.Supplier),
                 BuildFixedCustomer(),
 
-                /* header totals */
                 BuildTaxTotal(m.TaxTotal),
-                BuildLegalMonetaryTotal(m.MonetaryTotal),
+                BuildMonetaryTotal(m.MonetaryTotal),
 
-                /* lines */
                 from ln in m.Lines select BuildLine(ln));
 
             return new XDocument(root);
         }
 
-        /* ---------- parties ---------- */
-
+        /* supplier without AdditionalAccountID */
         private XElement BuildSupplier(ConsolidationSupplierParty sp)
         {
-            var partyEl = new XElement(cac + "AccountingSupplierParty");
             var p = new XElement(cac + "Party");
 
             if (!string.IsNullOrEmpty(sp.Party.IndustryCode))
@@ -248,31 +236,41 @@ namespace enInvBackEnd.Controllers
                     E(cbc + "Telephone", sp.Party.Contact.Telephone),
                     E(cbc + "ElectronicMail", sp.Party.Contact.ElectronicMail)));
 
-            partyEl.Add(p);
-            return partyEl;
+            return new XElement(cac + "AccountingSupplierParty", p);
         }
 
+        /* updated fixed customer */
         private XElement BuildFixedCustomer() =>
             new XElement(cac + "AccountingCustomerParty",
                 new XElement(cac + "Party",
                     new XElement(cac + "PartyIdentification",
                         new XElement(cbc + "ID",
-                            new XAttribute("schemeID", "OTH"), "Unregistered")),
+                            new XAttribute("schemeID", "TIN"), "EI00000000010")),
+                    new XElement(cac + "PartyIdentification",
+                        new XElement(cbc + "ID",
+                            new XAttribute("schemeID", "BRN"), "NA")),
+                    new XElement(cac + "PartyIdentification",
+                        new XElement(cbc + "ID",
+                            new XAttribute("schemeID", "SST"), "NA")),
+                    new XElement(cac + "PartyIdentification",
+                        new XElement(cbc + "ID",
+                            new XAttribute("schemeID", "TTX"), "NA")),
                     new XElement(cac + "PostalAddress",
-                        E(cbc + "CityName", "NA"),
-                        E(cbc + "PostalZone", "NA"),
-                        E(cbc + "CountrySubentityCode", "NA"),
-                        new XElement(cac + "AddressLine",
-                            E(cbc + "Line", "Consolidated Buyers")),
+                        new XElement(cbc + "CityName"),
+                        new XElement(cbc + "PostalZone"),
+                        new XElement(cbc + "CountrySubentityCode"),
+                        new XElement(cac + "AddressLine", new XElement(cbc + "Line", "NA")),
+                        new XElement(cac + "AddressLine", new XElement(cbc + "Line")),
+                        new XElement(cac + "AddressLine", new XElement(cbc + "Line")),
                         new XElement(cac + "Country",
-                            E(cbc + "IdentificationCode", "MYS"))),
+                            new XElement(cbc + "IdentificationCode",
+                                new XAttribute("listID", "ISO3166-1"),
+                                new XAttribute("listAgencyID", "6")))),
                     new XElement(cac + "PartyLegalEntity",
-                        E(cbc + "RegistrationName", "Consolidated Buyers")),
+                        new XElement(cbc + "RegistrationName", "Consolidated Buyers")),
                     new XElement(cac + "Contact",
-                        E(cbc + "Telephone", "NA"),
-                        E(cbc + "ElectronicMail", "NA"))));
-
-        /* ---------- totals ---------- */
+                        new XElement(cbc + "Telephone", "NA"),
+                        new XElement(cbc + "ElectronicMail", "NA"))));
 
         private XElement BuildTaxTotal(ConsolidationTaxTotal t) =>
             new XElement(cac + "TaxTotal",
@@ -288,7 +286,7 @@ namespace enInvBackEnd.Controllers
                                 new XAttribute("schemeAgencyID", "6"),
                                 t.TaxSchemeId)))));
 
-        private XElement BuildLegalMonetaryTotal(ConsolidationMonetaryTotal m) =>
+        private XElement BuildMonetaryTotal(ConsolidationMonetaryTotal m) =>
             new XElement(cac + "LegalMonetaryTotal",
                 Money("LineExtensionAmount", m.LineExtensionAmount),
                 Money("TaxExclusiveAmount", m.TaxExclusiveAmount),
@@ -298,11 +296,9 @@ namespace enInvBackEnd.Controllers
                 Money("PayableRoundingAmount", m.PayableRoundingAmount),
                 Money("PayableAmount", m.PayableAmount));
 
-        /* ---------- lines ---------- */
-
         private XElement BuildLine(ConsolidationInvoiceLine l)
         {
-            var percent = l.TaxTotal.TaxableAmount == 0
+            var pct = l.TaxTotal.TaxableAmount == 0
                 ? 0
                 : Math.Round(l.TaxTotal.TaxAmount / l.TaxTotal.TaxableAmount * 100, 2);
 
@@ -317,7 +313,7 @@ namespace enInvBackEnd.Controllers
                     new XElement(cac + "TaxSubtotal",
                         Money("TaxableAmount", l.TaxTotal.TaxableAmount),
                         Money("TaxAmount", l.TaxTotal.TaxAmount),
-                        E(cbc + "Percent", percent.ToString("0.00")),
+                        E(cbc + "Percent", pct.ToString("0.00")),
                         new XElement(cac + "TaxCategory",
                             E(cbc + "ID", l.TaxTotal.TaxCategoryId),
                             new XElement(cac + "TaxScheme",
