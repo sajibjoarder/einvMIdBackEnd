@@ -965,22 +965,6 @@
         },
         "additionalProperties": false
       },
-      "ConsolidationCustomerParty": {
-        "required": [
-          "party"
-        ],
-        "type": "object",
-        "properties": {
-          "additionalAccountID": {
-            "type": "string",
-            "nullable": true
-          },
-          "party": {
-            "$ref": "#/components/schemas/ConsolidationParty"
-          }
-        },
-        "additionalProperties": false
-      },
       "ConsolidationInvoiceLine": {
         "required": [
           "description",
@@ -1034,7 +1018,6 @@
       "ConsolidationInvoiceModel": {
         "required": [
           "currencyCode",
-          "customer",
           "id",
           "invoiceTypeCode",
           "issueDate",
@@ -1076,9 +1059,6 @@
           },
           "supplier": {
             "$ref": "#/components/schemas/ConsolidationSupplierParty"
-          },
-          "customer": {
-            "$ref": "#/components/schemas/ConsolidationCustomerParty"
           },
           "taxTotal": {
             "$ref": "#/components/schemas/ConsolidationTaxTotal"
@@ -1205,13 +1185,14 @@
       },
       "ConsolidationSupplierParty": {
         "required": [
+          "additionalAccountID",
           "party"
         ],
         "type": "object",
         "properties": {
           "additionalAccountID": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "party": {
             "$ref": "#/components/schemas/ConsolidationParty"
