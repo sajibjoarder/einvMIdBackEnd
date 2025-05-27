@@ -35,10 +35,10 @@ namespace enInvBackEnd.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            /* ── build XML ────────────────────────────────────────────── */
+            /* ── build XML ─────────────────────────── */
             var xmlDoc = new ConsolidationInvoiceBuilder().Build(dto);
 
-            /* ── save to disk ─────────────────────────────────────────── */
+            /* ── save to disk ──────────────────────── */
             var outDir = Path.Combine(_env.ContentRootPath, "consolidations");
             Directory.CreateDirectory(outDir);
 
@@ -50,16 +50,16 @@ namespace enInvBackEnd.Controllers
             await using (var fs = System.IO.File.Create(fullPath))
                 xmlDoc.Save(fs);
 
-            /* ── submit to LHDN ───────────────────────────────────────── */
+            /* ── submit to LHDN ────────────────────── */
             HttpResponseMessage resp = await _submissionSvc
-                .SubmitXmlAsync(fullPath, dto.Supplier.AdditionalAccountID, company_id);
+                .SubmitXmlAsync(fullPath, "142250926443", company_id);   // hard-code supplierTaxID (example)
             string respBody = await resp.Content.ReadAsStringAsync();
 
             return Created(string.Empty, new { fileName, fullPath, respBody });
         }
     }
 
-    #region ─────────── DTO / POCO layer ───────────
+    #region ───────────── DTO / POCO ─────────────
 
     public sealed class ConsolidationInvoiceModel
     {
@@ -81,7 +81,9 @@ namespace enInvBackEnd.Controllers
 
     public abstract class ConsolidationPartyBase
     {
-        [Required] public string AdditionalAccountID { get; set; } = "";
+        // kept for backend use (not written to XML)
+        public string? AdditionalAccountID { get; set; }
+
         [Required] public ConsolidationParty Party { get; set; } = new();
     }
 
@@ -163,18 +165,17 @@ namespace enInvBackEnd.Controllers
     }
     #endregion
 
-    #region ─────────── UBL builder ───────────
+    #region ───────────── XML Builder ─────────────
     internal sealed class ConsolidationInvoiceBuilder
     {
         private readonly XNamespace ubl = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2";
         private readonly XNamespace cac = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2";
         private readonly XNamespace cbc = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2";
 
-        /* helper that ALWAYS adds currencyID="MYR" */
+        /* helper to attach currencyID="MYR" */
         private XElement Money(string tag, decimal value) =>
             new XElement(cbc + tag, new XAttribute("currencyID", "MYR"), value);
-
-        private static XElement E(XName name, object value) => new(name, value);
+        private static XElement E(XName name, object val) => new(name, val);
 
         public XDocument Build(ConsolidationInvoiceModel m)
         {
@@ -191,7 +192,7 @@ namespace enInvBackEnd.Controllers
                 E(cbc + "DocumentCurrencyCode", m.CurrencyCode),
                 E(cbc + "TaxCurrencyCode", m.TaxCurrencyCode),
 
-                /* parties */
+                /* supplier + fixed customer */
                 BuildSupplier(m.Supplier),
                 BuildFixedCustomer(),
 
@@ -200,7 +201,7 @@ namespace enInvBackEnd.Controllers
                 BuildLegalMonetaryTotal(m.MonetaryTotal),
 
                 /* lines */
-                from l in m.Lines select BuildLine(l));
+                from ln in m.Lines select BuildLine(ln));
 
             return new XDocument(root);
         }
@@ -209,20 +210,16 @@ namespace enInvBackEnd.Controllers
 
         private XElement BuildSupplier(ConsolidationSupplierParty sp)
         {
-            var elt = new XElement(cac + "AccountingSupplierParty",
-                new XElement(cbc + "AdditionalAccountID",
-                    new XAttribute("schemeAgencyName", "CertEX"),
-                    sp.AdditionalAccountID));
-
-            var party = new XElement(cac + "Party");
+            var partyEl = new XElement(cac + "AccountingSupplierParty");
+            var p = new XElement(cac + "Party");
 
             if (!string.IsNullOrEmpty(sp.Party.IndustryCode))
-                party.Add(new XElement(cbc + "IndustryClassificationCode",
+                p.Add(new XElement(cbc + "IndustryClassificationCode",
                     new XAttribute("name", sp.Party.IndustryName ?? ""),
                     sp.Party.IndustryCode));
 
             foreach (var id in sp.Party.Identifications)
-                party.Add(new XElement(cac + "PartyIdentification",
+                p.Add(new XElement(cac + "PartyIdentification",
                     new XElement(cbc + "ID",
                         new XAttribute("schemeID", id.SchemeID), id.Value)));
 
@@ -238,21 +235,21 @@ namespace enInvBackEnd.Controllers
                 if (a.CountryIdentificationCode != null)
                     addr.Add(new XElement(cac + "Country",
                         E(cbc + "IdentificationCode", a.CountryIdentificationCode)));
-                party.Add(addr);
+                p.Add(addr);
             }
 
-            party.Add(new XElement(cac + "PartyLegalEntity",
+            p.Add(new XElement(cac + "PartyLegalEntity",
                 E(cbc + "RegistrationName", sp.Party.LegalEntity.RegistrationName),
                 sp.Party.LegalEntity.CompanyID == null ? null :
                     E(cbc + "CompanyID", sp.Party.LegalEntity.CompanyID)));
 
             if (sp.Party.Contact != null)
-                party.Add(new XElement(cac + "Contact",
+                p.Add(new XElement(cac + "Contact",
                     E(cbc + "Telephone", sp.Party.Contact.Telephone),
                     E(cbc + "ElectronicMail", sp.Party.Contact.ElectronicMail)));
 
-            elt.Add(party);
-            return elt;
+            partyEl.Add(p);
+            return partyEl;
         }
 
         private XElement BuildFixedCustomer() =>
@@ -305,7 +302,7 @@ namespace enInvBackEnd.Controllers
 
         private XElement BuildLine(ConsolidationInvoiceLine l)
         {
-            var pct = l.TaxTotal.TaxableAmount == 0
+            var percent = l.TaxTotal.TaxableAmount == 0
                 ? 0
                 : Math.Round(l.TaxTotal.TaxAmount / l.TaxTotal.TaxableAmount * 100, 2);
 
@@ -320,7 +317,7 @@ namespace enInvBackEnd.Controllers
                     new XElement(cac + "TaxSubtotal",
                         Money("TaxableAmount", l.TaxTotal.TaxableAmount),
                         Money("TaxAmount", l.TaxTotal.TaxAmount),
-                        E(cbc + "Percent", pct.ToString("0.00")),
+                        E(cbc + "Percent", percent.ToString("0.00")),
                         new XElement(cac + "TaxCategory",
                             E(cbc + "ID", l.TaxTotal.TaxCategoryId),
                             new XElement(cac + "TaxScheme",
@@ -340,10 +337,8 @@ namespace enInvBackEnd.Controllers
                                 new XAttribute("listID", "CLASS"),
                                 l.ItemClassificationCode))),
 
-                new XElement(cac + "Price",
-                    Money("PriceAmount", l.PriceAmount)),
-                new XElement(cac + "ItemPriceExtension",
-                    Money("Amount", l.ItemPriceExtensionAmount)));
+                new XElement(cac + "Price", Money("PriceAmount", l.PriceAmount)),
+                new XElement(cac + "ItemPriceExtension", Money("Amount", l.ItemPriceExtensionAmount)));
         }
     }
     #endregion
