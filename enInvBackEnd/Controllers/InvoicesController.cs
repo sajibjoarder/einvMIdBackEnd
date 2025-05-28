@@ -60,8 +60,10 @@ namespace enInvBackEnd.Controllers
             // inside Create() – after you save fullPath
 
 
-             HttpResponseMessage resp =await _submissionSvc.SubmitXmlAsync(fullPath, "142250926443",company_id);
-             string respBody = await resp.Content.ReadAsStringAsync();
+            HttpResponseMessage resp =await _submissionSvc.SubmitXmlAsync(fullPath, "142250926443",company_id,"Invoice",dto.Id);
+            string respBody = await resp.Content.ReadAsStringAsync();
+
+
 
             /* ---------- Return 201 Created ---------- */
             // Not a public URL, but the absolute path on server

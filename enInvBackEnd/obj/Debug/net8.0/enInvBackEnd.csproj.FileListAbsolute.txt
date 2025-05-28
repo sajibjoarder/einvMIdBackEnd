@@ -508,3 +508,4 @@ C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\ne
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\enInvBackEnd.genruntimeconfig.cache
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\ref\enInvBackEnd.dll
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\Newtonsoft.Json.dll

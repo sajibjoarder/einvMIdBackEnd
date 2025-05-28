@@ -24,6 +24,8 @@ public partial class EninvContext : DbContext
 
     public virtual DbSet<Customer> Customers { get; set; }
 
+    public virtual DbSet<Invoice> Invoices { get; set; }
+
     public virtual DbSet<LhdnProfile> LhdnProfiles { get; set; }
 
     public virtual DbSet<LhdnToken> LhdnTokens { get; set; }
@@ -211,6 +213,32 @@ public partial class EninvContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("ttx");
             entity.Property(e => e.UserId).HasColumnName("userId");
+        });
+
+        modelBuilder.Entity<Invoice>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Invoices_pkey");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.InvoiceId)
+                .HasColumnType("character varying")
+                .HasColumnName("InvoiceID");
+            entity.Property(e => e.Path).HasColumnType("character varying");
+            entity.Property(e => e.ResposeCode).HasColumnName("resposeCode");
+            entity.Property(e => e.RespososeDetails)
+                .HasColumnType("character varying")
+                .HasColumnName("respososeDetails");
+            entity.Property(e => e.Ststus)
+                .HasColumnType("character varying")
+                .HasColumnName("ststus");
+            entity.Property(e => e.TimeSummitted)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("timeSummitted");
+            entity.Property(e => e.Type)
+                .HasColumnType("character varying")
+                .HasColumnName("type");
         });
 
         modelBuilder.Entity<LhdnProfile>(entity =>

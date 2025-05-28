@@ -48,7 +48,7 @@ namespace enInvBackEnd.Controllers
                 xml.Save(fs);
 
             HttpResponseMessage resp =
-                await _submissionSvc.SubmitXmlAsync(path, dto.SupplierTaxId, company_id);
+                await _submissionSvc.SubmitXmlAsync(path, dto.SupplierTaxId, company_id, "CreditNotes",dto.Id);
             var respBody = await resp.Content.ReadAsStringAsync();
 
             return Created(string.Empty, new { file, path, respBody });

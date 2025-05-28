@@ -393,6 +393,27 @@
         }
       }
     },
+    "/api/Docs/single": {
+      "get": {
+        "tags": [
+          "Docs"
+        ],
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "tags": [

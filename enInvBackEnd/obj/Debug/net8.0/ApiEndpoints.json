@@ -222,6 +222,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "enInvBackEnd.Controllers.DocsController",
+    "Method": "GetInvoiceByInvoiceId",
+    "RelativePath": "api/Docs/single",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "invoiceId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "enInvBackEnd.Controllers.InvoicesController",
     "Method": "Create",
     "RelativePath": "api/Invoices/invoiceSubmit/{company_id}",
