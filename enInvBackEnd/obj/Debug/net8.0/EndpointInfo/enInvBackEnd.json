@@ -199,6 +199,48 @@
         }
       }
     },
+    "/api/CreditNotes/submit/{company_id}": {
+      "post": {
+        "tags": [
+          "CreditNotes"
+        ],
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreditNoteModelCreditNote"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreditNoteModelCreditNote"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreditNoteModelCreditNote"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Customer/create-customer-for-user": {
       "post": {
         "tags": [
@@ -790,7 +832,54 @@
         },
         "additionalProperties": false
       },
+      "AdditionalDocCreditNote": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "documentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Address": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "postal": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "line": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddressCreditNote": {
         "type": "object",
         "properties": {
           "city": {
@@ -833,6 +922,16 @@
           "multiplierFactor": {
             "type": "number",
             "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BillingReferenceCreditNote": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -1185,14 +1284,13 @@
       },
       "ConsolidationSupplierParty": {
         "required": [
-          "additionalAccountID",
           "party"
         ],
         "type": "object",
         "properties": {
           "additionalAccountID": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "party": {
             "$ref": "#/components/schemas/ConsolidationParty"
@@ -1238,6 +1336,138 @@
           "email": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContactCreditNote": {
+        "type": "object",
+        "properties": {
+          "telephone": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreditLineCreditNote": {
+        "required": [
+          "creditedQuantity",
+          "description",
+          "id",
+          "lineExtension",
+          "tax"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "creditedQuantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "lineExtension": {
+            "type": "number",
+            "format": "double"
+          },
+          "tax": {
+            "$ref": "#/components/schemas/TaxTotalCreditNote"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "priceAmount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreditNoteModelCreditNote": {
+        "required": [
+          "currencyCode",
+          "customer",
+          "id",
+          "issueDate",
+          "lines",
+          "monetaryTotal",
+          "supplier",
+          "supplierTaxId",
+          "taxCurrencyCode",
+          "taxTotal"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "issueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "issueTime": {
+            "type": "string",
+            "format": "date-span"
+          },
+          "invoiceTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeCodeVer": {
+            "type": "string",
+            "nullable": true
+          },
+          "currencyCode": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "taxCurrencyCode": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "billingRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BillingReferenceCreditNote"
+            },
+            "nullable": true
+          },
+          "additionalDocs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalDocCreditNote"
+            },
+            "nullable": true
+          },
+          "supplier": {
+            "$ref": "#/components/schemas/PartyCreditNote"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/PartyCreditNote"
+          },
+          "taxTotal": {
+            "$ref": "#/components/schemas/TaxTotalCreditNote"
+          },
+          "monetaryTotal": {
+            "$ref": "#/components/schemas/MonetaryTotalCreditNote"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreditLineCreditNote"
+            }
+          },
+          "supplierTaxId": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -1520,6 +1750,23 @@
         },
         "additionalProperties": false
       },
+      "LegalEntityCreditNote": {
+        "required": [
+          "registrationName"
+        ],
+        "type": "object",
+        "properties": {
+          "registrationName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LhdnProfile": {
         "type": "object",
         "properties": {
@@ -1615,6 +1862,36 @@
         },
         "additionalProperties": false
       },
+      "MonetaryTotalCreditNote": {
+        "type": "object",
+        "properties": {
+          "lineExtensionAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxExclusiveAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxInclusiveAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "allowanceTotalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "chargeTotalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "payableAmount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "Party": {
         "required": [
           "legalEntity"
@@ -1648,7 +1925,43 @@
         },
         "additionalProperties": false
       },
+      "PartyCreditNote": {
+        "type": "object",
+        "properties": {
+          "identifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartyIdCreditNote"
+            },
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressCreditNote"
+          },
+          "legal": {
+            "$ref": "#/components/schemas/LegalEntityCreditNote"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/ContactCreditNote"
+          }
+        },
+        "additionalProperties": false
+      },
       "PartyId": {
+        "type": "object",
+        "properties": {
+          "scheme": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartyIdCreditNote": {
         "type": "object",
         "properties": {
           "scheme": {
@@ -1757,6 +2070,28 @@
         "additionalProperties": false
       },
       "TaxTotal": {
+        "type": "object",
+        "properties": {
+          "taxableAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxCategoryId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxSchemeId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaxTotalCreditNote": {
         "type": "object",
         "properties": {
           "taxableAmount": {

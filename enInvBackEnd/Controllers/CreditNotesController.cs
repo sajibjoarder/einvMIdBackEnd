@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using enInvBackEnd.CreditNotes;          // <-- DTOs & builder live here
 using enInvBackEnd.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -19,19 +18,18 @@ namespace enInvBackEnd.Controllers
     public class CreditNotesController : ControllerBase
     {
         private readonly IWebHostEnvironment _env;
-        private readonly DocumentSubmissionService _svc;
+        private readonly DocumentSubmissionService _submissionSvc;
 
         public CreditNotesController(IWebHostEnvironment env,
-                                     DocumentSubmissionService svc)
+                                     DocumentSubmissionService submissionSvc)
         {
             _env = env;
-            _svc = svc;
+            _submissionSvc = submissionSvc;
         }
 
-        // POST api/creditnotes/submit/{company_id}
         [HttpPost("submit/{company_id}")]
         public async Task<IActionResult> Submit(Guid company_id,
-            [FromBody] CreditNoteModel dto)
+            [FromBody] CreditNoteModelCreditNote dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -50,75 +48,95 @@ namespace enInvBackEnd.Controllers
                 xml.Save(fs);
 
             HttpResponseMessage resp =
-                await _svc.SubmitXmlAsync(path, dto.SupplierTaxId, company_id);
+                await _submissionSvc.SubmitXmlAsync(path, dto.SupplierTaxId, company_id);
             var respBody = await resp.Content.ReadAsStringAsync();
 
             return Created(string.Empty, new { file, path, respBody });
         }
     }
-}
 
-// ──────────────────────────────────────────────────────────────
-//  Everything below is in a DIFFERENT namespace, so it cannot
-//  clash with the earlier Invoice / Consolidation types.
-// ──────────────────────────────────────────────────────────────
-namespace enInvBackEnd.CreditNotes
-{
-    #region DTOs
-    public sealed class CreditNoteModel
+    #region DTOs and Builder with renamed classes (CreditNote suffix)
+
+    public sealed class CreditNoteModelCreditNote
     {
         [Required] public string Id { get; set; } = "";
         [Required] public DateTime IssueDate { get; set; }
         public TimeSpan IssueTime { get; set; } = TimeSpan.Zero;
-        public string InvoiceTypeCode { get; set; } = "02";   // credit note
+        public string InvoiceTypeCode { get; set; } = "02";
         public string TypeCodeVer { get; set; } = "1.0";
         [Required] public string CurrencyCode { get; set; } = "MYR";
         [Required] public string TaxCurrencyCode { get; set; } = "MYR";
 
-        public List<BillingReference> BillingRefs { get; set; } = new();
-        public List<AdditionalDoc> AdditionalDocs { get; set; } = new();
+        public List<BillingReferenceCreditNote> BillingRefs { get; set; } = new();
+        public List<AdditionalDocCreditNote> AdditionalDocs { get; set; } = new();
 
-        [Required] public Party Supplier { get; set; } = new();
-        [Required] public Party Customer { get; set; } = new();
+        [Required] public PartyCreditNote Supplier { get; set; } = new();
+        [Required] public PartyCreditNote Customer { get; set; } = new();
 
-        [Required] public TaxTotal TaxTotal { get; set; } = new();
-        [Required] public MonetaryTotal MonetaryTotal { get; set; } = new();
+        [Required] public TaxTotalCreditNote TaxTotal { get; set; } = new();
+        [Required] public MonetaryTotalCreditNote MonetaryTotal { get; set; } = new();
 
-        [Required] public List<CreditLine> Lines { get; set; } = new();
+        [Required] public List<CreditLineCreditNote> Lines { get; set; } = new();
 
         [Required] public string SupplierTaxId { get; set; } = "";
     }
 
-    public sealed class BillingReference { public string Id { get; set; } = ""; }
+    public sealed class BillingReferenceCreditNote
+    {
+        public string Id { get; set; } = "";
+    }
 
-    public sealed class AdditionalDoc
+    public sealed class AdditionalDocCreditNote
     {
         [Required] public string Id { get; set; } = "";
         public string? DocumentType { get; set; }
         public string? Description { get; set; }
     }
 
-    public sealed class Party
+    public sealed class PartyCreditNote
     {
-        public List<PartyId> Identifications { get; set; } = new();
-        public Address? Address { get; set; }
-        public LegalEntity Legal { get; set; } = new();
-        public Contact? Contact { get; set; }
+        public List<PartyIdCreditNote> Identifications { get; set; } = new();
+        public AddressCreditNote? Address { get; set; }
+        public LegalEntityCreditNote Legal { get; set; } = new();
+        public ContactCreditNote? Contact { get; set; }
     }
 
-    public sealed class PartyId { public string Scheme = ""; public string Value = ""; }
-    public sealed class Address { public string City = ""; public string Postal = ""; public string State = ""; public string Line = ""; public string Country = ""; }
-    public sealed class LegalEntity { public string RegistrationName = ""; public string? CompanyId; }
-    public sealed class Contact { public string Telephone = ""; public string Email = ""; }
+    public sealed class PartyIdCreditNote
+    {
+        public string Scheme { get; set; } = "";
+        public string Value { get; set; } = "";
+    }
 
-    public sealed class TaxTotal
+    public sealed class AddressCreditNote
+    {
+        public string City { get; set; } = "";
+        public string Postal { get; set; } = "";
+        public string State { get; set; } = "";
+        public string Line { get; set; } = "";
+        public string Country { get; set; } = "";
+    }
+
+    public sealed class LegalEntityCreditNote
+    {
+        [Required] public string RegistrationName { get; set; } = "";
+        public string? CompanyId { get; set; }
+    }
+
+    public sealed class ContactCreditNote
+    {
+        public string Telephone { get; set; } = "";
+        public string Email { get; set; } = "";
+    }
+
+    public sealed class TaxTotalCreditNote
     {
         public decimal TaxableAmount { get; set; }
         public decimal TaxAmount { get; set; }
         public string TaxCategoryId { get; set; } = "01";
         public string TaxSchemeId { get; set; } = "OTH";
     }
-    public sealed class MonetaryTotal
+
+    public sealed class MonetaryTotalCreditNote
     {
         public decimal LineExtensionAmount { get; set; }
         public decimal TaxExclusiveAmount { get; set; }
@@ -128,18 +146,16 @@ namespace enInvBackEnd.CreditNotes
         public decimal PayableAmount { get; set; }
     }
 
-    public sealed class CreditLine
+    public sealed class CreditLineCreditNote
     {
         [Required] public string Id { get; set; } = "";
         [Required] public decimal CreditedQuantity { get; set; }
         [Required] public decimal LineExtension { get; set; }
-        [Required] public TaxTotal Tax { get; set; } = new();
+        [Required] public TaxTotalCreditNote Tax { get; set; } = new();
         [Required] public string Description { get; set; } = "";
         public decimal PriceAmount { get; set; }
     }
-    #endregion
 
-    #region UBL builder
     internal sealed class UblCreditNoteBuilder
     {
         private readonly XNamespace ubl = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2";
@@ -148,15 +164,16 @@ namespace enInvBackEnd.CreditNotes
 
         private XElement Money(string tag, decimal v)
             => new XElement(cbc + tag, new XAttribute("currencyID", "MYR"), v);
+
         private static XElement E(XName n, object v) => new(n, v);
 
-        public XDocument Build(CreditNoteModel m)
+        public XDocument Build(CreditNoteModelCreditNote m)
         {
-            var root = new XElement(ubl + "Invoice",   // credit-note sample still used <Invoice>
+            var root = new XElement(ubl + "Invoice",
                 new XAttribute(XNamespace.Xmlns + "cac", cac),
                 new XAttribute(XNamespace.Xmlns + "cbc", cbc),
 
-                /* header */
+                // header
                 E(cbc + "ID", m.Id),
                 E(cbc + "IssueDate", m.IssueDate.ToString("yyyy-MM-dd")),
                 E(cbc + "IssueTime", m.IssueTime.ToString(@"hh\:mm\:ss") + "Z"),
@@ -166,33 +183,35 @@ namespace enInvBackEnd.CreditNotes
                 E(cbc + "DocumentCurrencyCode", m.CurrencyCode),
                 E(cbc + "TaxCurrencyCode", m.TaxCurrencyCode),
 
-                /* references */
+                // references
                 from br in m.BillingRefs
                 select new XElement(cac + "BillingReference",
                     new XElement(cac + "InvoiceDocumentReference", E(cbc + "ID", br.Id))),
-                from ad in m.AdditionalDocs select BuildDoc(ad),
 
-                /* parties */
+                from doc in m.AdditionalDocs select BuildDoc(doc),
+
+                // parties
                 BuildParty("AccountingSupplierParty", m.Supplier),
                 BuildParty("AccountingCustomerParty", m.Customer),
 
-                /* totals */
+                // totals
                 BuildTaxTotal(m.TaxTotal),
                 BuildMonetaryTotal(m.MonetaryTotal),
 
-                /* lines */
-                from ln in m.Lines select BuildLine(ln));
+                // lines
+                from ln in m.Lines select BuildLine(ln)
+            );
 
             return new XDocument(root);
         }
 
-        private XElement BuildDoc(AdditionalDoc d) =>
+        private XElement BuildDoc(AdditionalDocCreditNote d) =>
             new XElement(cac + "AdditionalDocumentReference",
                 E(cbc + "ID", d.Id),
                 d.DocumentType == null ? null : E(cbc + "DocumentType", d.DocumentType),
                 d.Description == null ? null : E(cbc + "DocumentDescription", d.Description));
 
-        private XElement BuildParty(string tag, Party p)
+        private XElement BuildParty(string tag, PartyCreditNote p)
         {
             var party = new XElement(cac + "Party",
                 from id in p.Identifications
@@ -206,12 +225,13 @@ namespace enInvBackEnd.CreditNotes
                 p.Contact == null ? null :
                     new XElement(cac + "Contact",
                         E(cbc + "Telephone", p.Contact.Telephone),
-                        E(cbc + "ElectronicMail", p.Contact.Email)));
+                        E(cbc + "ElectronicMail", p.Contact.Email))
+            );
 
             return new XElement(cac + tag, party);
         }
 
-        private XElement? BuildAddr(Address? a) => a == null ? null :
+        private XElement? BuildAddr(AddressCreditNote? a) => a == null ? null :
             new XElement(cac + "PostalAddress",
                 E(cbc + "CityName", a.City),
                 E(cbc + "PostalZone", a.Postal),
@@ -219,7 +239,7 @@ namespace enInvBackEnd.CreditNotes
                 new XElement(cac + "AddressLine", E(cbc + "Line", a.Line)),
                 new XElement(cac + "Country", E(cbc + "IdentificationCode", a.Country)));
 
-        private XElement BuildTaxTotal(TaxTotal t) =>
+        private XElement BuildTaxTotal(TaxTotalCreditNote t) =>
             new XElement(cac + "TaxTotal",
                 Money("TaxAmount", t.TaxAmount),
                 new XElement(cac + "TaxSubtotal",
@@ -233,7 +253,7 @@ namespace enInvBackEnd.CreditNotes
                                 new XAttribute("schemeAgencyID", "6"),
                                 t.TaxSchemeId)))));
 
-        private XElement BuildMonetaryTotal(MonetaryTotal m) =>
+        private XElement BuildMonetaryTotal(MonetaryTotalCreditNote m) =>
             new XElement(cac + "LegalMonetaryTotal",
                 Money("LineExtensionAmount", m.LineExtensionAmount),
                 Money("TaxExclusiveAmount", m.TaxExclusiveAmount),
@@ -242,7 +262,7 @@ namespace enInvBackEnd.CreditNotes
                 Money("ChargeTotalAmount", m.ChargeTotalAmount),
                 Money("PayableAmount", m.PayableAmount));
 
-        private XElement BuildLine(CreditLine l) =>
+        private XElement BuildLine(CreditLineCreditNote l) =>
             new XElement(cac + "InvoiceLine",
                 E(cbc + "ID", l.Id),
                 new XElement(cbc + "CreditedQuantity",
