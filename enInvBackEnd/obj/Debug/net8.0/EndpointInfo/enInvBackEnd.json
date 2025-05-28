@@ -673,6 +673,48 @@
         }
       }
     },
+    "/api/SelfBilledInvoice/submit/{company_id}": {
+      "post": {
+        "tags": [
+          "SelfBilledInvoice"
+        ],
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SelfBilledInvoiceModelSelfInvoice"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SelfBilledInvoiceModelSelfInvoice"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SelfBilledInvoiceModelSelfInvoice"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/signup": {
       "post": {
         "tags": [
@@ -853,6 +895,27 @@
         },
         "additionalProperties": false
       },
+      "AdditionalDocumentReferenceSelfInvoice": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "documentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "documentDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Address": {
         "type": "object",
         "properties": {
@@ -905,6 +968,35 @@
         },
         "additionalProperties": false
       },
+      "AddressSelfInvoice": {
+        "type": "object",
+        "properties": {
+          "cityName": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalZone": {
+            "type": "string",
+            "nullable": true
+          },
+          "countrySubentityCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "countryIdentificationCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AllowanceCharge": {
         "type": "object",
         "properties": {
@@ -927,12 +1019,43 @@
         },
         "additionalProperties": false
       },
+      "AllowanceChargeSelfInvoice": {
+        "type": "object",
+        "properties": {
+          "chargeIndicator": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "multiplierFactorNumeric": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "BillingReferenceCreditNote": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BillingReferenceSelfInvoice": {
+        "type": "object",
+        "properties": {
+          "additionalDocumentReference": {
+            "$ref": "#/components/schemas/AdditionalDocumentReferenceSelfInvoice"
           }
         },
         "additionalProperties": false
@@ -1354,6 +1477,20 @@
         },
         "additionalProperties": false
       },
+      "ContactSelfInvoice": {
+        "type": "object",
+        "properties": {
+          "telephone": {
+            "type": "string",
+            "nullable": true
+          },
+          "electronicMail": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CreditLineCreditNote": {
         "required": [
           "creditedQuantity",
@@ -1617,6 +1754,65 @@
         },
         "additionalProperties": false
       },
+      "InvoiceLineSelfInvoice": {
+        "required": [
+          "allowanceCharges",
+          "description",
+          "id",
+          "lineExtensionAmount",
+          "quantity",
+          "taxTotal"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "lineExtensionAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "allowanceCharges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllowanceChargeSelfInvoice"
+            }
+          },
+          "taxTotal": {
+            "$ref": "#/components/schemas/TaxTotalSelfInvoice"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "originCountryIdentificationCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "commodityCodePTC": {
+            "type": "string",
+            "nullable": true
+          },
+          "commodityCodeClass": {
+            "type": "string",
+            "nullable": true
+          },
+          "priceAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "itemPriceExtensionAmount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "InvoiceModel": {
         "required": [
           "currencyCode",
@@ -1733,6 +1929,24 @@
         },
         "additionalProperties": false
       },
+      "InvoicePeriodSelfInvoice": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LegalEntity": {
         "required": [
           "registrationName"
@@ -1751,6 +1965,23 @@
         "additionalProperties": false
       },
       "LegalEntityCreditNote": {
+        "required": [
+          "registrationName"
+        ],
+        "type": "object",
+        "properties": {
+          "registrationName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LegalEntitySelfInvoice": {
         "required": [
           "registrationName"
         ],
@@ -1892,6 +2123,40 @@
         },
         "additionalProperties": false
       },
+      "MonetaryTotalSelfInvoice": {
+        "type": "object",
+        "properties": {
+          "lineExtensionAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxExclusiveAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxInclusiveAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "allowanceTotalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "chargeTotalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "payableRoundingAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "payableAmount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "Party": {
         "required": [
           "legalEntity"
@@ -1975,6 +2240,45 @@
         },
         "additionalProperties": false
       },
+      "PartyIdSelfInvoice": {
+        "type": "object",
+        "properties": {
+          "schemeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartySelfInvoice": {
+        "required": [
+          "legalEntity"
+        ],
+        "type": "object",
+        "properties": {
+          "identifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartyIdSelfInvoice"
+            },
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressSelfInvoice"
+          },
+          "legalEntity": {
+            "$ref": "#/components/schemas/LegalEntitySelfInvoice"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/ContactSelfInvoice"
+          }
+        },
+        "additionalProperties": false
+      },
       "PaymentMeans": {
         "type": "object",
         "properties": {
@@ -1989,7 +2293,53 @@
         },
         "additionalProperties": false
       },
+      "PaymentMeansSelfInvoice": {
+        "type": "object",
+        "properties": {
+          "paymentMeansCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "payeeAccountId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentTermsSelfInvoice": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PrepaidPayment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "paidAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "paidDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "paidTime": {
+            "type": "string",
+            "format": "date-span"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrepaidPaymentSelfInvoice": {
         "type": "object",
         "properties": {
           "id": {
@@ -2029,6 +2379,136 @@
         "type": "object",
         "properties": {
           "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SelfBilledInvoiceModelSelfInvoice": {
+        "required": [
+          "currencyCode",
+          "customer",
+          "id",
+          "invoiceTypeCode",
+          "issueDate",
+          "lines",
+          "monetaryTotal",
+          "supplier",
+          "supplierTaxId",
+          "taxCurrencyCode",
+          "taxTotal"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "issueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "issueTime": {
+            "type": "string",
+            "format": "date-span"
+          },
+          "invoiceTypeCode": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "typeCodeVer": {
+            "type": "string",
+            "nullable": true
+          },
+          "currencyCode": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "taxCurrencyCode": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "invoicePeriod": {
+            "$ref": "#/components/schemas/InvoicePeriodSelfInvoice"
+          },
+          "billingReferences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BillingReferenceSelfInvoice"
+            },
+            "nullable": true
+          },
+          "additionalDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalDocumentReferenceSelfInvoice"
+            },
+            "nullable": true
+          },
+          "supplier": {
+            "$ref": "#/components/schemas/PartySelfInvoice"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/PartySelfInvoice"
+          },
+          "deliveryParty": {
+            "$ref": "#/components/schemas/PartySelfInvoice"
+          },
+          "shipment": {
+            "$ref": "#/components/schemas/ShipmentSelfInvoice"
+          },
+          "paymentMeans": {
+            "$ref": "#/components/schemas/PaymentMeansSelfInvoice"
+          },
+          "paymentTerms": {
+            "$ref": "#/components/schemas/PaymentTermsSelfInvoice"
+          },
+          "prepaidPayments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PrepaidPaymentSelfInvoice"
+            },
+            "nullable": true
+          },
+          "allowanceCharges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllowanceChargeSelfInvoice"
+            },
+            "nullable": true
+          },
+          "taxTotal": {
+            "$ref": "#/components/schemas/TaxTotalSelfInvoice"
+          },
+          "monetaryTotal": {
+            "$ref": "#/components/schemas/MonetaryTotalSelfInvoice"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvoiceLineSelfInvoice"
+            }
+          },
+          "supplierTaxId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ShipmentSelfInvoice": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "handlingCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "handlingInstructions": {
             "type": "string",
             "nullable": true
           }
@@ -2107,6 +2587,32 @@
             "nullable": true
           },
           "taxSchemeId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaxTotalSelfInvoice": {
+        "type": "object",
+        "properties": {
+          "taxAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxableAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxCategoryId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxSchemeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxExemptionReason": {
             "type": "string",
             "nullable": true
           }

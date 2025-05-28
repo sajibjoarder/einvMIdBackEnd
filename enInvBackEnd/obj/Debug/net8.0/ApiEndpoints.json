@@ -370,6 +370,27 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "enInvBackEnd.Controllers.SelfBilledInvoiceController",
+    "Method": "Submit",
+    "RelativePath": "api/SelfBilledInvoice/submit/{company_id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "company_id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "enInvBackEnd.Controllers.SelfBilledInvoiceModelSelfInvoice",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "enInvBackEnd.Controllers.SignUpController",
     "Method": "SignUp",
     "RelativePath": "api/signup",
