@@ -53,8 +53,8 @@ namespace enInvBackEnd.Controllers
         [HttpGet("search")]
         public async Task<IActionResult> SearchInvoices(
             [FromQuery] string? invoiceId,
-            [FromQuery] DateTime? fromDate,
-            [FromQuery] DateTime? toDate,
+            [FromQuery] string? fromDate,
+            [FromQuery] string? toDate,
             [FromQuery] string? status,
             [FromQuery] string? type)
         {
@@ -65,11 +65,11 @@ namespace enInvBackEnd.Controllers
                 if (!string.IsNullOrWhiteSpace(invoiceId))
                     query = query.Where(i => i.InvoiceId == invoiceId);
 
-                if (fromDate.HasValue)
-                    query = query.Where(i => i.TimeSummitted >= fromDate.Value);
+                if (!string.IsNullOrWhiteSpace(fromDate) && DateTime.TryParse(fromDate, out var fromDt))
+                    query = query.Where(i => i.TimeSummitted >= fromDt);
 
-                if (toDate.HasValue)
-                    query = query.Where(i => i.TimeSummitted <= toDate.Value);
+                if (!string.IsNullOrWhiteSpace(toDate) && DateTime.TryParse(toDate, out var toDt))
+                    query = query.Where(i => i.TimeSummitted <= toDt);
 
                 if (!string.IsNullOrWhiteSpace(status))
                     query = query.Where(i => i.Ststus == status);
@@ -91,7 +91,6 @@ namespace enInvBackEnd.Controllers
                             xmlDoc.LoadXml(xmlContent);
                             string json = JsonConvert.SerializeXmlNode(xmlDoc, Newtonsoft.Json.Formatting.Indented, true);
 
-                            // Ensure the deserialized object is not null before adding to the list
                             var deserializedObject = JsonConvert.DeserializeObject(json);
                             if (deserializedObject != null)
                             {

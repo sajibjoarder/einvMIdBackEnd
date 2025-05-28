@@ -48,7 +48,7 @@ namespace enInvBackEnd.Controllers
                 xml.Save(fs);
 
             HttpResponseMessage resp =
-                await _submissionSvc.SubmitXmlAsync(path, dto.SupplierTaxId, company_id, "CreditNotes",dto.Id);
+                await _submissionSvc.SubmitXmlAsync(path, dto.SupplierTaxId, company_id, "CreditNotes", dto.Id);
             var respBody = await resp.Content.ReadAsStringAsync();
 
             return Created(string.Empty, new { file, path, respBody });
@@ -265,7 +265,7 @@ namespace enInvBackEnd.Controllers
         private XElement BuildLine(CreditLineCreditNote l) =>
             new XElement(cac + "InvoiceLine",
                 E(cbc + "ID", l.Id),
-                new XElement(cbc + "CreditedQuantity",
+                new XElement(cbc + "InvoicedQuantity",  // FIXED HERE: use InvoicedQuantity instead of CreditedQuantity
                     new XAttribute("unitCode", "C62"), l.CreditedQuantity),
                 Money("LineExtensionAmount", l.LineExtension),
                 new XElement(cac + "TaxTotal",
