@@ -125,7 +125,7 @@
       },
       {
         "Name": "dto",
-        "Type": "enInvBackEnd.Controllers.CreditNoteModelCreditNote",
+        "Type": "enInvBackEnd.Controllers.CreditNoteModels.CreditNoteModel_CN",
         "IsRequired": true
       }
     ],

@@ -219,17 +219,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreditNoteModelCreditNote"
+                "$ref": "#/components/schemas/CreditNoteModel_CN"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreditNoteModelCreditNote"
+                "$ref": "#/components/schemas/CreditNoteModel_CN"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreditNoteModelCreditNote"
+                "$ref": "#/components/schemas/CreditNoteModel_CN"
               }
             }
           }
@@ -923,28 +923,36 @@
   },
   "components": {
     "schemas": {
-      "AdditionalDoc": {
+      "AccountingCustomerParty_CN": {
         "required": [
-          "id"
+          "party"
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "documentType": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
+          "party": {
+            "$ref": "#/components/schemas/Party_CN"
           }
         },
         "additionalProperties": false
       },
-      "AdditionalDocCreditNote": {
+      "AccountingSupplierParty_CN": {
+        "required": [
+          "additionalAccountID",
+          "party"
+        ],
+        "type": "object",
+        "properties": {
+          "additionalAccountID": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "party": {
+            "$ref": "#/components/schemas/Party_CN"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdditionalDoc": {
         "required": [
           "id"
         ],
@@ -986,33 +994,28 @@
         },
         "additionalProperties": false
       },
-      "Address": {
+      "AdditionalDocumentReference_CN": {
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
-          "city": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "documentType": {
             "type": "string",
             "nullable": true
           },
-          "postal": {
-            "type": "string",
-            "nullable": true
-          },
-          "state": {
-            "type": "string",
-            "nullable": true
-          },
-          "line": {
-            "type": "string",
-            "nullable": true
-          },
-          "country": {
+          "documentDescription": {
             "type": "string",
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "AddressCreditNote": {
+      "Address": {
         "type": "object",
         "properties": {
           "city": {
@@ -1111,12 +1114,19 @@
         },
         "additionalProperties": false
       },
-      "BillingReferenceCreditNote": {
+      "AllowanceCharge_CN": {
         "type": "object",
         "properties": {
-          "id": {
+          "chargeIndicator": {
+            "type": "boolean"
+          },
+          "allowanceChargeReason": {
             "type": "string",
             "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -1126,6 +1136,35 @@
         "properties": {
           "additionalDocumentReference": {
             "$ref": "#/components/schemas/AdditionalDocumentReferenceSelfInvoice"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BillingReference_CN": {
+        "required": [
+          "invoiceDocumentReference"
+        ],
+        "type": "object",
+        "properties": {
+          "invoiceDocumentReference": {
+            "$ref": "#/components/schemas/InvoiceDocumentReference_CN"
+          },
+          "additionalDocumentReference": {
+            "$ref": "#/components/schemas/AdditionalDocumentReference_CN"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CommodityClassification_CN": {
+        "type": "object",
+        "properties": {
+          "listID": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemClassificationCode": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1533,20 +1572,6 @@
         },
         "additionalProperties": false
       },
-      "ContactCreditNote": {
-        "type": "object",
-        "properties": {
-          "telephone": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "ContactSelfInvoice": {
         "type": "object",
         "properties": {
@@ -1561,52 +1586,49 @@
         },
         "additionalProperties": false
       },
-      "CreditLineCreditNote": {
-        "required": [
-          "creditedQuantity",
-          "description",
-          "id",
-          "lineExtension",
-          "tax"
-        ],
+      "Contact_CN": {
         "type": "object",
         "properties": {
-          "id": {
-            "minLength": 1,
-            "type": "string"
+          "telephone": {
+            "type": "string",
+            "nullable": true
           },
-          "creditedQuantity": {
-            "type": "number",
-            "format": "double"
-          },
-          "lineExtension": {
-            "type": "number",
-            "format": "double"
-          },
-          "tax": {
-            "$ref": "#/components/schemas/TaxTotalCreditNote"
-          },
-          "description": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "priceAmount": {
-            "type": "number",
-            "format": "double"
+          "electronicMail": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "CreditNoteModelCreditNote": {
+      "Country_CN": {
+        "type": "object",
+        "properties": {
+          "identificationCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "listID": {
+            "type": "string",
+            "nullable": true
+          },
+          "listAgencyID": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreditNoteModel_CN": {
         "required": [
-          "currencyCode",
-          "customer",
+          "accountingCustomerParty",
+          "accountingSupplierParty",
+          "documentCurrencyCode",
           "id",
+          "invoiceLines",
+          "invoiceTypeCode",
           "issueDate",
-          "lines",
-          "monetaryTotal",
-          "supplier",
-          "supplierTaxId",
+          "issueTime",
+          "legalMonetaryTotal",
           "taxCurrencyCode",
           "taxTotal"
         ],
@@ -1621,18 +1643,14 @@
             "format": "date-time"
           },
           "issueTime": {
-            "type": "string",
-            "format": "date-span"
+            "minLength": 1,
+            "type": "string"
           },
           "invoiceTypeCode": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
-          "typeCodeVer": {
-            "type": "string",
-            "nullable": true
-          },
-          "currencyCode": {
+          "documentCurrencyCode": {
             "minLength": 1,
             "type": "string"
           },
@@ -1640,41 +1658,60 @@
             "minLength": 1,
             "type": "string"
           },
-          "billingRefs": {
+          "billingReferences": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/BillingReferenceCreditNote"
+              "$ref": "#/components/schemas/BillingReference_CN"
             },
             "nullable": true
           },
-          "additionalDocs": {
+          "additionalDocumentReferences": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AdditionalDocCreditNote"
+              "$ref": "#/components/schemas/AdditionalDocumentReference_CN"
             },
             "nullable": true
           },
-          "supplier": {
-            "$ref": "#/components/schemas/PartyCreditNote"
+          "accountingSupplierParty": {
+            "$ref": "#/components/schemas/AccountingSupplierParty_CN"
           },
-          "customer": {
-            "$ref": "#/components/schemas/PartyCreditNote"
+          "accountingCustomerParty": {
+            "$ref": "#/components/schemas/AccountingCustomerParty_CN"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/Delivery_CN"
+          },
+          "paymentMeans": {
+            "$ref": "#/components/schemas/PaymentMeans_CN"
+          },
+          "paymentTerms": {
+            "$ref": "#/components/schemas/PaymentTerms_CN"
+          },
+          "prepaidPayments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PrepaidPayment_CN"
+            },
+            "nullable": true
+          },
+          "allowanceCharges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllowanceCharge_CN"
+            },
+            "nullable": true
           },
           "taxTotal": {
-            "$ref": "#/components/schemas/TaxTotalCreditNote"
+            "$ref": "#/components/schemas/TaxTotal_CN"
           },
-          "monetaryTotal": {
-            "$ref": "#/components/schemas/MonetaryTotalCreditNote"
+          "legalMonetaryTotal": {
+            "$ref": "#/components/schemas/LegalMonetaryTotal_CN"
           },
-          "lines": {
+          "invoiceLines": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreditLineCreditNote"
+              "$ref": "#/components/schemas/InvoiceLine_CN"
             }
-          },
-          "supplierTaxId": {
-            "minLength": 1,
-            "type": "string"
           }
         },
         "additionalProperties": false
@@ -1758,6 +1795,75 @@
           },
           "party": {
             "$ref": "#/components/schemas/Party"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeliveryParty_CN": {
+        "type": "object",
+        "properties": {
+          "party": {
+            "$ref": "#/components/schemas/Party_CN"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Delivery_CN": {
+        "type": "object",
+        "properties": {
+          "deliveryParty": {
+            "$ref": "#/components/schemas/DeliveryParty_CN"
+          },
+          "shipment": {
+            "$ref": "#/components/schemas/Shipment_CN"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FreightAllowanceCharge_CN": {
+        "type": "object",
+        "properties": {
+          "chargeIndicator": {
+            "type": "boolean"
+          },
+          "allowanceChargeReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IndustryClassificationCode_CN": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "InvoiceDocumentReference_CN": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "uuid": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1879,6 +1985,47 @@
           "itemPriceExtensionAmount": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "InvoiceLine_CN": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "invoicedQuantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "unitCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "lineExtensionAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "allowanceCharges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllowanceCharge_CN"
+            },
+            "nullable": true
+          },
+          "taxTotal": {
+            "$ref": "#/components/schemas/TaxTotal_CN"
+          },
+          "item": {
+            "$ref": "#/components/schemas/Item_CN"
+          },
+          "price": {
+            "$ref": "#/components/schemas/Price_CN"
+          },
+          "itemPriceExtension": {
+            "$ref": "#/components/schemas/ItemPriceExtension_CN"
           }
         },
         "additionalProperties": false
@@ -2017,24 +2164,41 @@
         },
         "additionalProperties": false
       },
-      "LegalEntity": {
-        "required": [
-          "registrationName"
-        ],
+      "ItemPriceExtension_CN": {
         "type": "object",
         "properties": {
-          "registrationName": {
-            "minLength": 1,
-            "type": "string"
+          "amount": {
+            "type": "number",
+            "format": "double"
           },
-          "companyId": {
+          "currencyID": {
             "type": "string",
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "LegalEntityCreditNote": {
+      "Item_CN": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "originCountry": {
+            "$ref": "#/components/schemas/OriginCountry_CN"
+          },
+          "commodityClassifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommodityClassification_CN"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LegalEntity": {
         "required": [
           "registrationName"
         ],
@@ -2064,6 +2228,40 @@
           "companyId": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LegalMonetaryTotal_CN": {
+        "type": "object",
+        "properties": {
+          "lineExtensionAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxExclusiveAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxInclusiveAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "allowanceTotalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "chargeTotalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "payableRoundingAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "payableAmount": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -2163,36 +2361,6 @@
         },
         "additionalProperties": false
       },
-      "MonetaryTotalCreditNote": {
-        "type": "object",
-        "properties": {
-          "lineExtensionAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "taxExclusiveAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "taxInclusiveAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "allowanceTotalAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "chargeTotalAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "payableAmount": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
       "MonetaryTotalSelfInvoice": {
         "type": "object",
         "properties": {
@@ -2223,6 +2391,16 @@
           "payableAmount": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OriginCountry_CN": {
+        "type": "object",
+        "properties": {
+          "identificationCode": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2260,43 +2438,7 @@
         },
         "additionalProperties": false
       },
-      "PartyCreditNote": {
-        "type": "object",
-        "properties": {
-          "identifications": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PartyIdCreditNote"
-            },
-            "nullable": true
-          },
-          "address": {
-            "$ref": "#/components/schemas/AddressCreditNote"
-          },
-          "legal": {
-            "$ref": "#/components/schemas/LegalEntityCreditNote"
-          },
-          "contact": {
-            "$ref": "#/components/schemas/ContactCreditNote"
-          }
-        },
-        "additionalProperties": false
-      },
       "PartyId": {
-        "type": "object",
-        "properties": {
-          "scheme": {
-            "type": "string",
-            "nullable": true
-          },
-          "value": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "PartyIdCreditNote": {
         "type": "object",
         "properties": {
           "scheme": {
@@ -2324,6 +2466,41 @@
         },
         "additionalProperties": false
       },
+      "PartyIdentification_CN": {
+        "required": [
+          "schemeID",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "schemeID": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "value": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartyLegalEntity_CN": {
+        "required": [
+          "registrationName"
+        ],
+        "type": "object",
+        "properties": {
+          "registrationName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "companyID": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PartySelfInvoice": {
         "required": [
           "legalEntity"
@@ -2345,6 +2522,46 @@
           },
           "contact": {
             "$ref": "#/components/schemas/ContactSelfInvoice"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Party_CN": {
+        "required": [
+          "contact",
+          "partyLegalEntity",
+          "postalAddress"
+        ],
+        "type": "object",
+        "properties": {
+          "partyIdentifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartyIdentification_CN"
+            },
+            "nullable": true
+          },
+          "postalAddress": {
+            "$ref": "#/components/schemas/PostalAddress_CN"
+          },
+          "partyLegalEntity": {
+            "$ref": "#/components/schemas/PartyLegalEntity_CN"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/Contact_CN"
+          },
+          "industryClassificationCode": {
+            "$ref": "#/components/schemas/IndustryClassificationCode_CN"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PayeeFinancialAccount_CN": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2377,12 +2594,63 @@
         },
         "additionalProperties": false
       },
+      "PaymentMeans_CN": {
+        "type": "object",
+        "properties": {
+          "paymentMeansCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "payeeFinancialAccount": {
+            "$ref": "#/components/schemas/PayeeFinancialAccount_CN"
+          }
+        },
+        "additionalProperties": false
+      },
       "PaymentTermsSelfInvoice": {
         "type": "object",
         "properties": {
           "note": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaymentTerms_CN": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PostalAddress_CN": {
+        "type": "object",
+        "properties": {
+          "cityName": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalZone": {
+            "type": "string",
+            "nullable": true
+          },
+          "countrySubentityCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "country": {
+            "$ref": "#/components/schemas/Country_CN"
           }
         },
         "additionalProperties": false
@@ -2427,6 +2695,42 @@
           "paidTime": {
             "type": "string",
             "format": "date-span"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrepaidPayment_CN": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "paidAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "paidDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "paidTime": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Price_CN": {
+        "type": "object",
+        "properties": {
+          "priceAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "currencyID": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2585,6 +2889,27 @@
         },
         "additionalProperties": false
       },
+      "Shipment_CN": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "handlingCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "handlingInstructions": {
+            "type": "string",
+            "nullable": true
+          },
+          "freightAllowanceCharge": {
+            "$ref": "#/components/schemas/FreightAllowanceCharge_CN"
+          }
+        },
+        "additionalProperties": false
+      },
       "SignUpRequest": {
         "type": "object",
         "properties": {
@@ -2619,7 +2944,38 @@
         },
         "additionalProperties": false
       },
-      "TaxTotal": {
+      "TaxCategory_CN": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxScheme": {
+            "$ref": "#/components/schemas/TaxScheme_CN"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaxScheme_CN": {
+        "type": "object",
+        "properties": {
+          "schemeID": {
+            "type": "string",
+            "nullable": true
+          },
+          "schemeAgencyID": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaxSubtotal_CN": {
         "type": "object",
         "properties": {
           "taxableAmount": {
@@ -2630,18 +2986,22 @@
             "type": "number",
             "format": "double"
           },
-          "taxCategoryId": {
+          "percent": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "taxExemptionReason": {
             "type": "string",
             "nullable": true
           },
-          "taxSchemeId": {
-            "type": "string",
-            "nullable": true
+          "taxCategory": {
+            "$ref": "#/components/schemas/TaxCategory_CN"
           }
         },
         "additionalProperties": false
       },
-      "TaxTotalCreditNote": {
+      "TaxTotal": {
         "type": "object",
         "properties": {
           "taxableAmount": {
@@ -2685,6 +3045,19 @@
           "taxExemptionReason": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaxTotal_CN": {
+        "type": "object",
+        "properties": {
+          "taxAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "taxSubtotal": {
+            "$ref": "#/components/schemas/TaxSubtotal_CN"
           }
         },
         "additionalProperties": false
