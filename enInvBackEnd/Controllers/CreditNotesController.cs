@@ -55,7 +55,7 @@ namespace enInvBackEnd.Controllers
         }
     }
 
-    #region DTOs with IndustryCode and ItemPriceExtension
+    #region DTOs with MSIC and ItemPriceExtension
 
     public sealed class CreditNoteModelCreditNote
     {
@@ -99,7 +99,7 @@ namespace enInvBackEnd.Controllers
         public AddressCreditNote? Address { get; set; }
         public LegalEntityCreditNote Legal { get; set; } = new();
 
-        // Added IndustryCode and IndustryName for MSIC validation
+        // MSIC properties
         public string? IndustryCode { get; set; }
         public string? IndustryName { get; set; }
 
@@ -160,9 +160,9 @@ namespace enInvBackEnd.Controllers
         [Required] public string Description { get; set; } = "";
 
         public decimal PriceAmount { get; set; }
-
-        // Added ItemPriceExtensionAmount to fix missing ItemPriceExtension
         public decimal ItemPriceExtensionAmount { get; set; }
+        public string CommodityCodePtc { get; set; } = "";
+        public string CommodityCodeClass { get; set; } = "";
     }
 
     #endregion
@@ -305,14 +305,13 @@ namespace enInvBackEnd.Controllers
                     new XElement(cac + "OriginCountry", E(cbc + "IdentificationCode", "MYS")),
                     new XElement(cac + "CommodityClassification",
                         new XElement(cbc + "ItemClassificationCode",
-                            new XAttribute("listID", "PTC"), l.PriceAmount.ToString("F0"))),
+                            new XAttribute("listID", "PTC"), l.CommodityCodePtc)),
                     new XElement(cac + "CommodityClassification",
                         new XElement(cbc + "ItemClassificationCode",
-                            new XAttribute("listID", "CLASS"), l.Description))),
+                            new XAttribute("listID", "CLASS"), l.CommodityCodeClass))),
 
                 new XElement(cac + "Price", Money("PriceAmount", l.PriceAmount)),
 
-                // This was missing, add ItemPriceExtension element
                 new XElement(cac + "ItemPriceExtension",
                     Money("Amount", l.ItemPriceExtensionAmount))
             );
