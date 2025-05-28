@@ -55,7 +55,7 @@ namespace enInvBackEnd.Controllers
         }
     }
 
-    #region DTOs and Builder with renamed classes (CreditNote suffix)
+    #region DTOs with IndustryCode and ItemPriceExtension
 
     public sealed class CreditNoteModelCreditNote
     {
@@ -98,6 +98,11 @@ namespace enInvBackEnd.Controllers
         public List<PartyIdCreditNote> Identifications { get; set; } = new();
         public AddressCreditNote? Address { get; set; }
         public LegalEntityCreditNote Legal { get; set; } = new();
+
+        // Added IndustryCode and IndustryName for MSIC validation
+        public string? IndustryCode { get; set; }
+        public string? IndustryName { get; set; }
+
         public ContactCreditNote? Contact { get; set; }
     }
 
@@ -153,8 +158,16 @@ namespace enInvBackEnd.Controllers
         [Required] public decimal LineExtension { get; set; }
         [Required] public TaxTotalCreditNote Tax { get; set; } = new();
         [Required] public string Description { get; set; } = "";
+
         public decimal PriceAmount { get; set; }
+
+        // Added ItemPriceExtensionAmount to fix missing ItemPriceExtension
+        public decimal ItemPriceExtensionAmount { get; set; }
     }
+
+    #endregion
+
+    #region UBL Credit Note XML Builder with fixes
 
     internal sealed class UblCreditNoteBuilder
     {
@@ -214,6 +227,11 @@ namespace enInvBackEnd.Controllers
         private XElement BuildParty(string tag, PartyCreditNote p)
         {
             var party = new XElement(cac + "Party",
+                // MSIC Industry Classification - REQUIRED
+                !string.IsNullOrEmpty(p.IndustryCode) ?
+                new XElement(cbc + "IndustryClassificationCode",
+                    new XAttribute("name", p.IndustryName ?? ""), p.IndustryCode) : null,
+
                 from id in p.Identifications
                 select new XElement(cac + "PartyIdentification",
                     new XElement(cbc + "ID",
@@ -265,9 +283,10 @@ namespace enInvBackEnd.Controllers
         private XElement BuildLine(CreditLineCreditNote l) =>
             new XElement(cac + "InvoiceLine",
                 E(cbc + "ID", l.Id),
-                new XElement(cbc + "InvoicedQuantity",  // FIXED HERE: use InvoicedQuantity instead of CreditedQuantity
+                new XElement(cbc + "InvoicedQuantity",
                     new XAttribute("unitCode", "C62"), l.CreditedQuantity),
                 Money("LineExtensionAmount", l.LineExtension),
+
                 new XElement(cac + "TaxTotal",
                     Money("TaxAmount", l.Tax.TaxAmount),
                     new XElement(cac + "TaxSubtotal",
@@ -280,8 +299,23 @@ namespace enInvBackEnd.Controllers
                                     new XAttribute("schemeID", "UN/ECE 5153"),
                                     new XAttribute("schemeAgencyID", "6"),
                                     l.Tax.TaxSchemeId))))),
-                new XElement(cac + "Item", E(cbc + "Description", l.Description)),
-                new XElement(cac + "Price", Money("PriceAmount", l.PriceAmount)));
+
+                new XElement(cac + "Item",
+                    E(cbc + "Description", l.Description),
+                    new XElement(cac + "OriginCountry", E(cbc + "IdentificationCode", "MYS")),
+                    new XElement(cac + "CommodityClassification",
+                        new XElement(cbc + "ItemClassificationCode",
+                            new XAttribute("listID", "PTC"), l.PriceAmount.ToString("F0"))),
+                    new XElement(cac + "CommodityClassification",
+                        new XElement(cbc + "ItemClassificationCode",
+                            new XAttribute("listID", "CLASS"), l.Description))),
+
+                new XElement(cac + "Price", Money("PriceAmount", l.PriceAmount)),
+
+                // This was missing, add ItemPriceExtension element
+                new XElement(cac + "ItemPriceExtension",
+                    Money("Amount", l.ItemPriceExtensionAmount))
+            );
     }
     #endregion
 }

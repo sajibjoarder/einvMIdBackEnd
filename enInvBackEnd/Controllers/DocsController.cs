@@ -82,11 +82,12 @@ namespace enInvBackEnd.Controllers
 
                 foreach (var invoice in invoices)
                 {
-                    if (!string.IsNullOrWhiteSpace(invoice.Path) && System.IO.File.Exists(invoice.Path))
+                    var absolutePath = Path.GetFullPath(invoice.Path);
+                    if (!string.IsNullOrWhiteSpace(absolutePath) && System.IO.File.Exists(absolutePath))
                     {
                         try
                         {
-                            var xmlContent = await System.IO.File.ReadAllTextAsync(invoice.Path);
+                            var xmlContent = await System.IO.File.ReadAllTextAsync(absolutePath);
                             var xmlDoc = new XmlDocument();
                             xmlDoc.LoadXml(xmlContent);
                             string json = JsonConvert.SerializeXmlNode(xmlDoc, Newtonsoft.Json.Formatting.Indented, true);
