@@ -49,5 +49,64 @@ namespace enInvBackEnd.Controllers
                 }
             }
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchInvoices(
+            [FromQuery] string? invoiceId,
+            [FromQuery] DateTime? fromDate,
+            [FromQuery] DateTime? toDate,
+            [FromQuery] string? status,
+            [FromQuery] string? type)
+        {
+            using (var _context = new EninvContext())
+            {
+                var query = _context.Invoices.AsQueryable();
+
+                if (!string.IsNullOrWhiteSpace(invoiceId))
+                    query = query.Where(i => i.InvoiceId == invoiceId);
+
+                if (fromDate.HasValue)
+                    query = query.Where(i => i.TimeSummitted >= fromDate.Value);
+
+                if (toDate.HasValue)
+                    query = query.Where(i => i.TimeSummitted <= toDate.Value);
+
+                if (!string.IsNullOrWhiteSpace(status))
+                    query = query.Where(i => i.Ststus == status);
+
+                if (!string.IsNullOrWhiteSpace(type))
+                    query = query.Where(i => i.Type == type);
+
+                var invoices = await query.ToListAsync();
+                var results = new List<object>();
+
+                foreach (var invoice in invoices)
+                {
+                    if (!string.IsNullOrWhiteSpace(invoice.Path) && System.IO.File.Exists(invoice.Path))
+                    {
+                        try
+                        {
+                            var xmlContent = await System.IO.File.ReadAllTextAsync(invoice.Path);
+                            var xmlDoc = new XmlDocument();
+                            xmlDoc.LoadXml(xmlContent);
+                            string json = JsonConvert.SerializeXmlNode(xmlDoc, Newtonsoft.Json.Formatting.Indented, true);
+
+                            // Ensure the deserialized object is not null before adding to the list
+                            var deserializedObject = JsonConvert.DeserializeObject(json);
+                            if (deserializedObject != null)
+                            {
+                                results.Add(deserializedObject);
+                            }
+                        }
+                        catch
+                        {
+                            // Optionally log or handle file read errors per invoice
+                        }
+                    } 
+                }
+
+                return Ok(results);
+            }
+        }
     }
 }
