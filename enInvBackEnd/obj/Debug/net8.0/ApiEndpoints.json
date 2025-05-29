@@ -112,8 +112,8 @@
   },
   {
     "ContainingType": "enInvBackEnd.Controllers.CreditNotesController",
-    "Method": "Submit",
-    "RelativePath": "api/CreditNotes/submit/{company_id}",
+    "Method": "Create",
+    "RelativePath": "api/CreditNotes/creditNoteSubmit/{company_id}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -125,7 +125,7 @@
       },
       {
         "Name": "dto",
-        "Type": "enInvBackEnd.Controllers.CreditNoteModels.CreditNoteModel_CN",
+        "Type": "enInvBackEnd.Controllers.CreditNoteModel",
         "IsRequired": true
       }
     ],

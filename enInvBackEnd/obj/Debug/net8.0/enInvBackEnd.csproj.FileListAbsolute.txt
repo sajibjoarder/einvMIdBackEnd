@@ -422,6 +422,7 @@ C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\ne
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\Microsoft.OpenApi.dll
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\MimeKit.dll
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\Npgsql.dll
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
@@ -498,6 +499,7 @@ C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\ne
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\enInvBackEnd.sourcelink.json
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\scopedcss\bundle\enInvBackEnd.styles.css
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
@@ -507,5 +509,3 @@ C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\ne
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\enInvBackEnd.pdb
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\enInvBackEnd.genruntimeconfig.cache
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\ref\enInvBackEnd.dll
-C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\staticwebassets.build.json.cache
-C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\Newtonsoft.Json.dll
