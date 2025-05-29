@@ -50,6 +50,45 @@ namespace enInvBackEnd.Controllers
             }
         }
 
+        [HttpGet("getInvs")]
+        public async Task<IActionResult> SearchInvoicesONly(
+        [FromQuery] string? invoiceId,
+        [FromQuery] string? fromDate,
+        [FromQuery] string? toDate,
+        [FromQuery] string? status,
+        [FromQuery] string? type)
+        {
+            using (var _context = new EninvContext())
+            {
+                var query = _context.Invoices.AsQueryable();
+
+                if (!string.IsNullOrWhiteSpace(invoiceId))
+                    query = query.Where(i => i.InvoiceId == invoiceId);
+
+                if (!string.IsNullOrWhiteSpace(fromDate) && DateTime.TryParse(fromDate, out var fromDt))
+                    query = query.Where(i => i.TimeSummitted >= fromDt);
+
+                if (!string.IsNullOrWhiteSpace(toDate) && DateTime.TryParse(toDate, out var toDt))
+                    query = query.Where(i => i.TimeSummitted <= toDt);
+
+                if (!string.IsNullOrWhiteSpace(status))
+                    query = query.Where(i => i.Ststus == status);
+
+                if (!string.IsNullOrWhiteSpace(type))
+                    query = query.Where(i => i.Type == type);
+
+                var invoices = await query.ToListAsync();
+            
+
+              
+
+                return Ok(invoices);
+            }
+        }
+
+
+
+
         [HttpGet("search")]
         public async Task<IActionResult> SearchInvoices(
             [FromQuery] string? invoiceId,

@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|c:\\users\\sajib\\downloads\\einvmidbackend\\einvmidbackend\\eninvbackend\\controllers\\creditnotescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\controllers\\creditnotescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|c:\\users\\sajib\\downloads\\einvmidbackend\\einvmidbackend\\eninvbackend\\controllers\\docscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\controllers\\docscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -37,6 +41,19 @@
               "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
             },
             {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DocsController.cs",
+              "DocumentMoniker": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\DocsController.cs",
+              "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\DocsController.cs",
+              "ToolTip": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\DocsController.cs",
+              "RelativeToolTip": "enInvBackEnd\\Controllers\\DocsController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAADgAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-28T14:21:42.754Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Bookmark",
               "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
             },
@@ -48,7 +65,7 @@
               "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\CreditNotesController.cs",
               "ToolTip": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\CreditNotesController.cs",
               "RelativeToolTip": "enInvBackEnd\\Controllers\\CreditNotesController.cs",
-              "ViewState": "AgIAAMoAAAAAAAAAAIA6wGwAAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-28T12:00:21.701Z",
               "EditorCaption": ""

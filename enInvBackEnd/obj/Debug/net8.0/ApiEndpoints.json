@@ -223,6 +223,42 @@
   },
   {
     "ContainingType": "enInvBackEnd.Controllers.DocsController",
+    "Method": "SearchInvoicesONly",
+    "RelativePath": "api/Docs/getInvs",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "invoiceId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "fromDate",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "toDate",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "type",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "enInvBackEnd.Controllers.DocsController",
     "Method": "SearchInvoices",
     "RelativePath": "api/Docs/search",
     "HttpMethod": "GET",
