@@ -32,28 +32,44 @@ namespace enInvBackEnd.Controllers
         public async Task<IActionResult> Create(Guid company_id,
             [FromBody] CreditNoteModel dto)
         {
+            /* ----- extra manual checks for LHDN mandatory fields ----- */
+            if (dto?.Supplier?.Party?.Address?.Lines?.FirstOrDefault() is null ||
+                dto?.Customer?.Party?.Address?.Lines?.FirstOrDefault() is null)
+                ModelState.AddModelError("AddressLine1",
+                    "Address line 1 is required for supplier and customer.");
+
+            foreach (var ln in dto.Lines)
+            {
+                bool isExempt = ln.Tax.TaxAmount == 0 &&
+                                ln.Tax.TaxCategoryId?.Equals("E",
+                                        StringComparison.OrdinalIgnoreCase) == true;
+                if (isExempt && string.IsNullOrWhiteSpace(ln.Tax.TaxExemptionReason))
+                    ModelState.AddModelError("TaxExemptionReason",
+                        $"Line {ln.Id}: TaxExemptionReason is required when tax is exempt.");
+            }
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            /* ---- build XML identical to the sample ---- */
+            /* ----- build XML identical to LHDN sample + fixes ----- */
             var xml = new UblCreditNoteBuilder().Build(dto);
 
-            /* ---- store under {ContentRoot}\creditnotes ---- */
-            var dir = Path.Combine(_env.ContentRootPath, "creditnotes");
+            /* ----- save file ----- */
+            string dir = Path.Combine(_env.ContentRootPath, "creditnotes");
             Directory.CreateDirectory(dir);
 
-            var safeId = string.Concat(dto.Id.Where(c =>
-                               !Path.GetInvalidFileNameChars().Contains(c)));
-            var fileName = $"{safeId}_{Guid.NewGuid():N}.xml";
-            var fullPath = Path.Combine(dir, fileName);
+            string safeId = string.Concat(dto.Id.Where(c =>
+                              !Path.GetInvalidFileNameChars().Contains(c)));
+            string fileName = $"{safeId}_{Guid.NewGuid():N}.xml";
+            string fullPath = Path.Combine(dir, fileName);
 
             await using (var fs = System.IO.File.Create(fullPath))
                 xml.Save(fs);
 
-            /* ---- submit to LHDN (IRBM) ---- */
+            /* ----- submit to IRBM / LHDN ----- */
             HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(
                                             fullPath,
-                                            "142250926443",      
+                                            "142250926443",      // supplier TIN / branch code
                                             company_id,
                                             "CreditNote",
                                             dto.Id);
@@ -63,11 +79,10 @@ namespace enInvBackEnd.Controllers
         }
     }
 
-    /* ─────────────────────  DTO / POCO layer ───────────────────── */
+    /* ───────────────────── DTO / POCO layer (CN_*) ───────────────────── */
 
     public sealed class CreditNoteModel
     {
-        /* header */
         [Required] public string Id { get; set; } = "";
         [Required] public DateTime IssueDate { get; set; }
         [Required] public TimeSpan IssueTime { get; set; }
@@ -76,39 +91,27 @@ namespace enInvBackEnd.Controllers
         [Required] public string CurrencyCode { get; set; } = "MYR";
         [Required] public string TaxCurrencyCode { get; set; } = "MYR";
 
-        /* period */
         public CN_InvoicePeriod? InvoicePeriod { get; set; }
-
-        /* billing reference (repeat) */
         public List<CN_BillingReference> BillingReferences { get; set; } = new();
-
-        /* standalone additional documents (repeat) */
         public List<CN_AdditionalDoc> AdditionalDocs { get; set; } = new();
 
-        /* parties */
         [Required] public CN_SupplierParty Supplier { get; set; } = new();
         [Required] public CN_CustomerParty Customer { get; set; } = new();
 
-        /* delivery + shipment */
         public CN_DeliveryInfo? Delivery { get; set; }
-
-        /* payment */
         public CN_PaymentMeans? PaymentMeans { get; set; }
         public string? PaymentTermsNote { get; set; }
         public List<CN_PrepaidPayment> PrepaidPayments { get; set; } = new();
 
-        /* header-level allowance / charge */
         public List<CN_AllowanceCharge> HeaderCharges { get; set; } = new();
 
-        /* totals */
         [Required] public CN_TaxTotal TaxTotal { get; set; } = new();
         [Required] public CN_MonetaryTotal MonetaryTotal { get; set; } = new();
 
-        /* credit-note lines */
         [Required] public List<CN_CreditNoteLine> Lines { get; set; } = new();
     }
 
-    /* ------------- supporting DTOs (prefix CN_) ------------- */
+    /* ---------- sub-types (unchanged names keep CN_ prefix) ---------- */
 
     public sealed class CN_InvoicePeriod
     {
@@ -119,9 +122,9 @@ namespace enInvBackEnd.Controllers
 
     public sealed class CN_BillingReference
     {
-        public string? InvoiceId { get; set; }  // <cac:InvoiceDocumentReference><cbc:ID>
-        public string? InvoiceUuid { get; set; }  // <cbc:UUID>
-        public string? AdditionalDocumentId { get; set; }  // <cac:AdditionalDocumentReference><cbc:ID>
+        public string? InvoiceId { get; set; }
+        public string? InvoiceUuid { get; set; }
+        public string? AdditionalDocumentId { get; set; }
     }
 
     public sealed class CN_AdditionalDoc
@@ -130,8 +133,6 @@ namespace enInvBackEnd.Controllers
         public string? DocumentType { get; set; }
         public string? Description { get; set; }
     }
-
-    /* ---- Party hierarchy ---- */
 
     public abstract class CN_PartyBase
     {
@@ -147,7 +148,6 @@ namespace enInvBackEnd.Controllers
     {
         public string? IndustryCode { get; set; }
         public string? IndustryName { get; set; }
-
         public List<CN_PartyId> Identifications { get; set; } = new();
         public CN_Address? Address { get; set; }
         [Required] public CN_LegalEntity LegalEntity { get; set; } = new();
@@ -165,7 +165,7 @@ namespace enInvBackEnd.Controllers
         public string City { get; set; } = "";
         public string Postal { get; set; } = "";
         public string State { get; set; } = "";
-        public List<string> Lines { get; set; } = new();   // maps to 3 × <cac:AddressLine>
+        public List<string> Lines { get; set; } = new();   // AddressLine[0] must exist
         public string Country { get; set; } = "";
     }
 
@@ -180,7 +180,7 @@ namespace enInvBackEnd.Controllers
         public string Email { get; set; } = "";
     }
 
-    /* ---- Delivery & Shipment ---- */
+    /* ---- delivery ---- */
 
     public sealed class CN_DeliveryInfo
     {
@@ -201,7 +201,7 @@ namespace enInvBackEnd.Controllers
         public decimal Amount { get; set; }
     }
 
-    /* ---- Payment ---- */
+    /* ---- payment ---- */
 
     public sealed class CN_PaymentMeans
     {
@@ -217,14 +217,14 @@ namespace enInvBackEnd.Controllers
         public TimeSpan PaidTime { get; set; }
     }
 
-    /* ---- Charges, totals, lines ---- */
+    /* ---- charges, totals, line ---- */
 
     public sealed class CN_AllowanceCharge
     {
         public bool ChargeIndicator { get; set; }
         public string Reason { get; set; } = "";
         public decimal Amount { get; set; }
-        public decimal? MultiplierFactor { get; set; }   // present on line-level allowances
+        public decimal? MultiplierFactor { get; set; }
     }
 
     public sealed class CN_TaxTotal
@@ -233,6 +233,7 @@ namespace enInvBackEnd.Controllers
         public decimal TaxAmount { get; set; }
         public string TaxCategoryId { get; set; } = "01";
         public string TaxSchemeId { get; set; } = "OTH";
+        public string? TaxExemptionReason { get; set; }   // ← required when exempt
     }
 
     public sealed class CN_MonetaryTotal
@@ -265,7 +266,7 @@ namespace enInvBackEnd.Controllers
         public decimal ItemPriceExtension { get; set; }
     }
 
-    /* ─────────────────── UBL builder (CN_* types) ─────────────────── */
+    /* ─────────────────── UBL builder ─────────────────── */
 
     public sealed class UblCreditNoteBuilder
     {
@@ -275,7 +276,7 @@ namespace enInvBackEnd.Controllers
 
         public XDocument Build(CreditNoteModel m)
         {
-            var root = new XElement(ubl + "Invoice",   // IRBM credit-notes still use <Invoice>
+            var root = new XElement(ubl + "Invoice",
                 new XAttribute(XNamespace.Xmlns + "cac", cac),
                 new XAttribute(XNamespace.Xmlns + "cbc", cbc),
 
@@ -296,7 +297,7 @@ namespace enInvBackEnd.Controllers
                         m.InvoicePeriod.Description == null ? null :
                             E("Description", m.InvoicePeriod.Description)),
 
-                /* billing reference blocks */
+                /* billing references */
                 from br in m.BillingReferences select BuildBillingReference(br),
 
                 /* additional docs */
@@ -320,7 +321,7 @@ namespace enInvBackEnd.Controllers
                     new XElement(cac + "PaymentTerms", E("Note", m.PaymentTermsNote)),
                 from pp in m.PrepaidPayments select BuildPrepaidPayment(pp),
 
-                /* header-level allowance / charge */
+                /* header charges */
                 from ac in m.HeaderCharges select BuildAllowanceCharge(ac),
 
                 /* totals */
@@ -352,23 +353,20 @@ namespace enInvBackEnd.Controllers
             return new XElement(cac + tag,
                 pb.AdditionalAccountId == null ? null :
                     new XElement(cbc + "AdditionalAccountID",
-                        new XAttribute("schemeAgencyName", "CertEX"), pb.AdditionalAccountId),
+                        new XAttribute("schemeAgencyName", "CertEX"),
+                        pb.AdditionalAccountId),
                 new XElement(cac + "Party",
-
                     p.IndustryCode == null ? null :
                         new XElement(cbc + "IndustryClassificationCode",
-                            new XAttribute("name", p.IndustryName ?? ""), p.IndustryCode),
-
+                            new XAttribute("name", p.IndustryName ?? ""),
+                            p.IndustryCode),
                     from id in p.Identifications
                     select new XElement(cac + "PartyIdentification",
                         new XElement(cbc + "ID",
                             new XAttribute("schemeID", id.Scheme), id.Value)),
-
                     p.Address == null ? null : BuildAddress(p.Address),
-
                     new XElement(cac + "PartyLegalEntity",
                         E("RegistrationName", p.LegalEntity.RegistrationName)),
-
                     p.Contact == null ? null :
                         new XElement(cac + "Contact",
                             E("Telephone", p.Contact.Telephone),
@@ -381,8 +379,9 @@ namespace enInvBackEnd.Controllers
                 E("CityName", a.City),
                 E("PostalZone", a.Postal),
                 E("CountrySubentityCode", a.State),
-                from line in a.Lines
-                select new XElement(cac + "AddressLine", E("Line", line)),
+                from ln in a.Lines
+                select
+                    new XElement(cac + "AddressLine", E("Line", ln)),
                 new XElement(cac + "Country", E("IdentificationCode", a.Country)));
 
         private XElement BuildDelivery(CN_DeliveryInfo d) =>
@@ -404,7 +403,8 @@ namespace enInvBackEnd.Controllers
             pm == null ? null :
                 new XElement(cac + "PaymentMeans",
                     E("PaymentMeansCode", pm.PaymentMeansCode),
-                    new XElement(cac + "PayeeFinancialAccount", E("ID", pm.PayeeAccountId)));
+                    new XElement(cac + "PayeeFinancialAccount",
+                        E("ID", pm.PayeeAccountId)));
 
         private XElement BuildPrepaidPayment(CN_PrepaidPayment p) =>
             new XElement(cac + "PrepaidPayment",
@@ -429,6 +429,8 @@ namespace enInvBackEnd.Controllers
                     Money("TaxAmount", t.TaxAmount),
                     new XElement(cac + "TaxCategory",
                         E("ID", t.TaxCategoryId),
+                        t.TaxExemptionReason == null ? null :
+                            E("TaxExemptionReason", t.TaxExemptionReason),
                         new XElement(cac + "TaxScheme",
                             new XElement(cbc + "ID",
                                 new XAttribute("schemeID", "UN/ECE 5153"),
@@ -453,7 +455,6 @@ namespace enInvBackEnd.Controllers
                 Money("LineExtensionAmount", l.LineExtension),
 
                 from ac in l.Allowances select BuildAllowanceCharge(ac),
-
                 BuildTaxTotal(l.Tax),
 
                 new XElement(cac + "Item",
