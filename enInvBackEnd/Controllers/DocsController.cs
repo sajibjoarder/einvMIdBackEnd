@@ -79,9 +79,6 @@ namespace enInvBackEnd.Controllers
 
                 var invoices = await query.ToListAsync();
             
-
-              
-
                 return Ok(invoices);
             }
         }
