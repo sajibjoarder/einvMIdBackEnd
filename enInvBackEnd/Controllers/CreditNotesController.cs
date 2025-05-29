@@ -20,8 +20,7 @@ namespace enInvBackEnd.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly DocumentSubmissionService _submissionSvc;
 
-        public CreditNotesController(IWebHostEnvironment env,
-                                     DocumentSubmissionService submissionSvc)
+        public CreditNotesController(IWebHostEnvironment env, DocumentSubmissionService submissionSvc)
         {
             _env = env;
             _submissionSvc = submissionSvc;
@@ -32,12 +31,7 @@ namespace enInvBackEnd.Controllers
         public async Task<IActionResult> Create(Guid company_id,
             [FromBody] CreditNoteModel dto)
         {
-            /* ----- extra manual checks for LHDN mandatory fields ----- */
-            if (dto?.Supplier?.Party?.Address?.Lines?.FirstOrDefault() is null ||
-                dto?.Customer?.Party?.Address?.Lines?.FirstOrDefault() is null)
-                ModelState.AddModelError("AddressLine1",
-                    "Address line 1 is required for supplier and customer.");
-
+            // Only check for TaxExemptionReason when needed (CF366)
             foreach (var ln in dto.Lines)
             {
                 bool isExempt = ln.Tax.TaxAmount == 0 &&
@@ -79,8 +73,7 @@ namespace enInvBackEnd.Controllers
         }
     }
 
-    /* ───────────────────── DTO / POCO layer (CN_*) ───────────────────── */
-
+    // DTO / POCO layer (CN_*)
     public sealed class CreditNoteModel
     {
         [Required] public string Id { get; set; } = "";
@@ -110,8 +103,6 @@ namespace enInvBackEnd.Controllers
 
         [Required] public List<CN_CreditNoteLine> Lines { get; set; } = new();
     }
-
-    /* ---------- sub-types (unchanged names keep CN_ prefix) ---------- */
 
     public sealed class CN_InvoicePeriod
     {
@@ -165,7 +156,7 @@ namespace enInvBackEnd.Controllers
         public string City { get; set; } = "";
         public string Postal { get; set; } = "";
         public string State { get; set; } = "";
-        public List<string> Lines { get; set; } = new();   // AddressLine[0] must exist
+        public List<string> Lines { get; set; } = new();
         public string Country { get; set; } = "";
     }
 
@@ -179,8 +170,6 @@ namespace enInvBackEnd.Controllers
         public string Telephone { get; set; } = "";
         public string Email { get; set; } = "";
     }
-
-    /* ---- delivery ---- */
 
     public sealed class CN_DeliveryInfo
     {
@@ -201,8 +190,6 @@ namespace enInvBackEnd.Controllers
         public decimal Amount { get; set; }
     }
 
-    /* ---- payment ---- */
-
     public sealed class CN_PaymentMeans
     {
         public string PaymentMeansCode { get; set; } = "";
@@ -216,8 +203,6 @@ namespace enInvBackEnd.Controllers
         public DateTime PaidDate { get; set; }
         public TimeSpan PaidTime { get; set; }
     }
-
-    /* ---- charges, totals, line ---- */
 
     public sealed class CN_AllowanceCharge
     {
@@ -233,7 +218,7 @@ namespace enInvBackEnd.Controllers
         public decimal TaxAmount { get; set; }
         public string TaxCategoryId { get; set; } = "01";
         public string TaxSchemeId { get; set; } = "OTH";
-        public string? TaxExemptionReason { get; set; }   // ← required when exempt
+        public string? TaxExemptionReason { get; set; } // for CF366
     }
 
     public sealed class CN_MonetaryTotal
@@ -266,8 +251,7 @@ namespace enInvBackEnd.Controllers
         public decimal ItemPriceExtension { get; set; }
     }
 
-    /* ─────────────────── UBL builder ─────────────────── */
-
+    // UBL builder
     public sealed class UblCreditNoteBuilder
     {
         private readonly XNamespace ubl = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2";
@@ -280,7 +264,6 @@ namespace enInvBackEnd.Controllers
                 new XAttribute(XNamespace.Xmlns + "cac", cac),
                 new XAttribute(XNamespace.Xmlns + "cbc", cbc),
 
-                /* header */
                 E("ID", m.Id),
                 E("IssueDate", m.IssueDate.ToString("yyyy-MM-dd")),
                 E("IssueTime", m.IssueTime.ToString(@"hh\:mm\:ss") + "Z"),
@@ -289,7 +272,6 @@ namespace enInvBackEnd.Controllers
                 E("DocumentCurrencyCode", m.CurrencyCode),
                 E("TaxCurrencyCode", m.TaxCurrencyCode),
 
-                /* period */
                 m.InvoicePeriod == null ? null :
                     new XElement(cac + "InvoicePeriod",
                         E("StartDate", m.InvoicePeriod.StartDate.ToString("yyyy-MM-dd")),
@@ -297,45 +279,32 @@ namespace enInvBackEnd.Controllers
                         m.InvoicePeriod.Description == null ? null :
                             E("Description", m.InvoicePeriod.Description)),
 
-                /* billing references */
                 from br in m.BillingReferences select BuildBillingReference(br),
-
-                /* additional docs */
                 from doc in m.AdditionalDocs
-                select
-                    new XElement(cac + "AdditionalDocumentReference",
+                select new XElement(cac + "AdditionalDocumentReference",
                         E("ID", doc.Id),
                         doc.DocumentType == null ? null : E("DocumentType", doc.DocumentType),
                         doc.Description == null ? null : E("DocumentDescription", doc.Description)),
 
-                /* parties */
                 BuildAccountingParty("AccountingSupplierParty", m.Supplier),
                 BuildAccountingParty("AccountingCustomerParty", m.Customer),
 
-                /* delivery */
                 m.Delivery == null ? null : BuildDelivery(m.Delivery),
 
-                /* payment */
                 BuildPaymentMeans(m.PaymentMeans),
                 m.PaymentTermsNote == null ? null :
                     new XElement(cac + "PaymentTerms", E("Note", m.PaymentTermsNote)),
                 from pp in m.PrepaidPayments select BuildPrepaidPayment(pp),
-
-                /* header charges */
                 from ac in m.HeaderCharges select BuildAllowanceCharge(ac),
 
-                /* totals */
                 BuildTaxTotal(m.TaxTotal),
                 BuildMonetaryTotal(m.MonetaryTotal),
 
-                /* lines */
                 from l in m.Lines select BuildLine(l)
             );
 
             return new XDocument(root);
         }
-
-        /* ---- element builders ---- */
 
         private XElement BuildBillingReference(CN_BillingReference b) =>
             new XElement(cac + "BillingReference",
@@ -380,8 +349,7 @@ namespace enInvBackEnd.Controllers
                 E("PostalZone", a.Postal),
                 E("CountrySubentityCode", a.State),
                 from ln in a.Lines
-                select
-                    new XElement(cac + "AddressLine", E("Line", ln)),
+                select new XElement(cac + "AddressLine", E("Line", ln)),
                 new XElement(cac + "Country", E("IdentificationCode", a.Country)));
 
         private XElement BuildDelivery(CN_DeliveryInfo d) =>
@@ -393,8 +361,7 @@ namespace enInvBackEnd.Controllers
             new XElement(cac + "Shipment",
                 E("ID", s.Id),
                 from c in s.FreightCharges
-                select
-                    new XElement(cac + "FreightAllowanceCharge",
+                select new XElement(cac + "FreightAllowanceCharge",
                         E("ChargeIndicator", c.ChargeIndicator.ToString().ToLower()),
                         E("AllowanceChargeReason", c.Reason),
                         Money("Amount", c.Amount)));
@@ -453,10 +420,8 @@ namespace enInvBackEnd.Controllers
                 new XElement(cbc + "InvoicedQuantity",
                     new XAttribute("unitCode", l.UnitCode), l.Quantity),
                 Money("LineExtensionAmount", l.LineExtension),
-
                 from ac in l.Allowances select BuildAllowanceCharge(ac),
                 BuildTaxTotal(l.Tax),
-
                 new XElement(cac + "Item",
                     E("Description", l.Description),
                     new XElement(cac + "OriginCountry",
@@ -467,14 +432,12 @@ namespace enInvBackEnd.Controllers
                     new XElement(cac + "CommodityClassification",
                         new XElement(cbc + "ItemClassificationCode",
                             new XAttribute("listID", "CLASS"), l.CommodityCodeClass))),
-
                 new XElement(cac + "Price", Money("PriceAmount", l.PriceAmount)),
-                new XElement(cac + "ItemPriceExtension", Money("Amount", l.ItemPriceExtension)));
+                new XElement(cac + "ItemPriceExtension", Money("Amount", l.ItemPriceExtension))
+            );
 
-        /* ---- helpers ---- */
         private XElement Money(string tag, decimal amount) =>
-            new XElement(cbc + tag,
-                new XAttribute("currencyID", "MYR"), amount);
+            new XElement(cbc + tag, new XAttribute("currencyID", "MYR"), amount);
 
         private XElement E(string name, object? value) =>
             value == null ? null! : new XElement(cbc + name, value);

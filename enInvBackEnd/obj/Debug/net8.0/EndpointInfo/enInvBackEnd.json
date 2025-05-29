@@ -1551,6 +1551,10 @@
           "taxSchemeId": {
             "type": "string",
             "nullable": true
+          },
+          "taxExemptionReason": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
