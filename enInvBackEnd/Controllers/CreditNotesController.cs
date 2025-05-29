@@ -53,7 +53,7 @@ namespace enInvBackEnd.Controllers
             /* ---- submit to LHDN (IRBM) ---- */
             HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(
                                             fullPath,
-                                            "142250926443",      // supplier TIN / branch code
+                                            "142250926443",      
                                             company_id,
                                             "CreditNote",
                                             dto.Id);
