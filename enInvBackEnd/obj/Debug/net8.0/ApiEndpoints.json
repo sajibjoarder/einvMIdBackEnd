@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "enInvBackEnd.Controllers.Cancel_docController",
+    "Method": "CancelDocument",
+    "RelativePath": "api/cancel_doc/{docId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "docId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "enInvBackEnd.Controllers.CompanyController",
     "Method": "CreateCompanyForUser",
     "RelativePath": "api/Company/create-company-for-user",

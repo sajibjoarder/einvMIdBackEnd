@@ -60,7 +60,7 @@ namespace enInvBackEnd.Controllers
             // inside Create() – after you save fullPath
 
 
-            HttpResponseMessage resp =await _submissionSvc.SubmitXmlAsync(fullPath, "142250926443",company_id,"Invoice",dto.Id);
+            HttpResponseMessage resp =await _submissionSvc.SubmitXmlAsync(fullPath ,company_id,"Invoice",dto.Id);
             string respBody = await resp.Content.ReadAsStringAsync();
 
 

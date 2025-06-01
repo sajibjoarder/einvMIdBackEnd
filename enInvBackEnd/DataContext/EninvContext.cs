@@ -222,6 +222,9 @@ public partial class EninvContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
+            entity.Property(e => e.DocId)
+                .HasColumnType("character varying")
+                .HasColumnName("DocID");
             entity.Property(e => e.InvoiceId)
                 .HasColumnType("character varying")
                 .HasColumnName("InvoiceID");
@@ -233,6 +236,9 @@ public partial class EninvContext : DbContext
             entity.Property(e => e.Ststus)
                 .HasColumnType("character varying")
                 .HasColumnName("ststus");
+            entity.Property(e => e.SubmissionId)
+                .HasColumnType("character varying")
+                .HasColumnName("SubmissionID");
             entity.Property(e => e.TimeSummitted)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("timeSummitted");

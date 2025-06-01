@@ -5,6 +5,29 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/cancel_doc/{docId}": {
+      "post": {
+        "tags": [
+          "Cancel_doc"
+        ],
+        "parameters": [
+          {
+            "name": "docId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Company/create-company-for-user": {
       "post": {
         "tags": [

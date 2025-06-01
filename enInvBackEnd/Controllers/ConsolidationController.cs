@@ -51,7 +51,7 @@ namespace enInvBackEnd.Controllers
                 xmlDoc.Save(fs);
 
             /* ---------- submit ---------- */
-            HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(fullPath, "142250926443", company_id, "Consolidation",dto.Id); // example tax-ID
+            HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(fullPath, company_id, "Consolidation",dto.Id); // example tax-ID
             string respBody = await resp.Content.ReadAsStringAsync();
 
             return Created(string.Empty, new { fileName, fullPath, respBody });

@@ -22,7 +22,7 @@ namespace enInvBackEnd.Services
             _http = http;
         }
 
-        public async Task<HttpResponseMessage> SubmitXmlAsync(string xmlFilePath, string codeNumber, Guid companyId, string Doctype, string? id)
+        public async Task<HttpResponseMessage> SubmitXmlAsync(string xmlFilePath, Guid companyId, string Doctype, string? id)
         {
             // Get token
             var tokenManager = new LhdnTokenManager();
@@ -78,45 +78,72 @@ namespace enInvBackEnd.Services
 
 
 
-            try
-            {
-                var response = await _http.SendAsync(request);
+            var response = await _http.SendAsync(request);
+            string rawJson = await response.Content.ReadAsStringAsync();
 
-                using (EninvContext dbcontext = new EninvContext())
+            // 1) Extract submissionUid
+            string submissionUid = null;
+            // 2) Extract invoiceCodeNumber from acceptedDocuments[0]
+            string documentId = null;
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
                 {
-                    Invoice invoice = new Invoice
+                    using var doc = JsonDocument.Parse(rawJson);
+                    var root = doc.RootElement;
+
+                    // submissionUid
+                    if (root.TryGetProperty("submissionUid", out var uidElem))
+                        submissionUid = uidElem.GetString();
+
+                    // acceptedDocuments → first element → invoiceCodeNumber
+                    if (root.TryGetProperty("acceptedDocuments", out var acceptedArray)
+                        && acceptedArray.ValueKind == JsonValueKind.Array
+                        && acceptedArray.GetArrayLength() > 0)
                     {
-                        Id = invoiceID,
-                        CompanyId = companyId,
-                        TimeSummitted = DateTime.Now,
-                        Type = Doctype,
-                        Ststus = response.IsSuccessStatusCode ? "Submitted" : "Failed",
-                        ResposeCode = (int)response.StatusCode,
-                        Path = xmlFilePath,
-                        RespososeDetails = response.IsSuccessStatusCode ? "Submission successful" : await response.Content.ReadAsStringAsync(),
-                        InvoiceId = id
-
-                    };
-
-                    dbcontext.Invoices.Add(invoice);
-                    await dbcontext.SaveChangesAsync();
-                    return response;
+                        var firstAccepted = acceptedArray[0];
+                        if (firstAccepted.TryGetProperty("invoiceCodeNumber", out var codeElem))
+                            documentId = codeElem.GetString();
+                    }
                 }
-            }catch (Exception ex)
-            {
-
-                return new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError)
+                catch
                 {
-                    Content = new StringContent($"Error: {ex.Message}")
-                };
+                    // ignore parsing errors; submissionUid and documentId remain null
+                }
             }
 
-        
+            using (var dbcontext = new EninvContext())
+            {
+                var invoice = new Invoice
+                {
+                    Id = invoiceID,
+                    CompanyId = companyId,
+                    TimeSummitted = DateTime.Now,
+                    Type = Doctype,
+                    Ststus = response.IsSuccessStatusCode ? "Submitted" : "Failed",
+                    ResposeCode = (int)response.StatusCode,
+                    Path = xmlFilePath,
+                    RespososeDetails = rawJson,
+                    InvoiceId = id,
+                    SubmissionId = submissionUid,
+                    DocId = documentId      // <-- store the invoiceCodeNumber here
+                };
+
+                dbcontext.Invoices.Add(invoice);
+                await dbcontext.SaveChangesAsync();
+            }
+
+            return response;
 
 
 
 
-          
+
+
+
+
+
         }
     }
 }

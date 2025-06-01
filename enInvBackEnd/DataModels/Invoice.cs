@@ -22,4 +22,8 @@ public partial class Invoice
     public Guid? CompanyId { get; set; }
 
     public string? InvoiceId { get; set; }
+
+    public string? SubmissionId { get; set; }
+
+    public string? DocId { get; set; }
 }

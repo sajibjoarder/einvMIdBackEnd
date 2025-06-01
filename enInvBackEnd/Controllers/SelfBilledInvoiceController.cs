@@ -47,7 +47,7 @@ namespace enInvBackEnd.Controllers
             await using (var fs = System.IO.File.Create(fullPath))
                 xmlDoc.Save(fs);
 
-            HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(fullPath, dto.SupplierTaxId, company_id, "SelfBilledInvoice",dto.Id);
+            HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(fullPath, company_id, "SelfBilledInvoice",dto.Id);
             string respBody = await resp.Content.ReadAsStringAsync();
 
             return Created(string.Empty, new { fileName, fullPath, respBody });
