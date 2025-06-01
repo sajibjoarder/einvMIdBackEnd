@@ -11,6 +11,11 @@
         "Name": "docId",
         "Type": "System.Guid",
         "IsRequired": true
+      },
+      {
+        "Name": "reasonForCancelation",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
