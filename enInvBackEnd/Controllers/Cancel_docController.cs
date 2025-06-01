@@ -17,7 +17,7 @@ namespace enInvBackEnd.Controllers
         private const string LhdnApiBase = "https://preprod-api.myinvois.hasil.gov.my/";
 
         [HttpPost("{docId:guid}")]
-        public async Task<IActionResult> CancelDocument(Guid docId)
+        public async Task<IActionResult> CancelDocument(Guid docId,string reasonForCancelation)
         {
             using var dbcontext = new EninvContext();
             var invoice = await dbcontext.Invoices.FindAsync(docId);
@@ -38,7 +38,7 @@ namespace enInvBackEnd.Controllers
             var payload = new
             {
                 status = "cancelled",
-                reason = "Cancellation requested by user"
+                reason = reasonForCancelation
             };
             string jsonPayload = JsonSerializer.Serialize(payload);
 
