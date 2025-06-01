@@ -82,9 +82,11 @@ namespace enInvBackEnd.Services
             string rawJson = await response.Content.ReadAsStringAsync();
 
             // 1) Extract submissionUid
-            string submissionUid = null;
+            string? submissionUid = null;
             // 2) Extract invoiceCodeNumber from acceptedDocuments[0]
-            string documentId = null;
+            string? documentId = null;
+            // 3) Extract uuid from acceptedDocuments[0]
+            string? uuid = null;
 
             if (response.IsSuccessStatusCode)
             {
@@ -97,7 +99,7 @@ namespace enInvBackEnd.Services
                     if (root.TryGetProperty("submissionUid", out var uidElem))
                         submissionUid = uidElem.GetString();
 
-                    // acceptedDocuments → first element → invoiceCodeNumber
+                    // acceptedDocuments → first element → invoiceCodeNumber and uuid
                     if (root.TryGetProperty("acceptedDocuments", out var acceptedArray)
                         && acceptedArray.ValueKind == JsonValueKind.Array
                         && acceptedArray.GetArrayLength() > 0)
@@ -105,13 +107,18 @@ namespace enInvBackEnd.Services
                         var firstAccepted = acceptedArray[0];
                         if (firstAccepted.TryGetProperty("invoiceCodeNumber", out var codeElem))
                             documentId = codeElem.GetString();
+
+                        // Extract uuid
+                        if (firstAccepted.TryGetProperty("uuid", out var uuidElem))
+                            uuid = uuidElem.GetString();
                     }
                 }
                 catch
                 {
-                    // ignore parsing errors; submissionUid and documentId remain null
+                    // ignore parsing errors; variables remain null
                 }
             }
+
 
             using (var dbcontext = new EninvContext())
             {
@@ -127,7 +134,7 @@ namespace enInvBackEnd.Services
                     RespososeDetails = rawJson,
                     InvoiceId = id,
                     SubmissionId = submissionUid,
-                    DocId = documentId      // <-- store the invoiceCodeNumber here
+                    DocId = uuid      
                 };
 
                 dbcontext.Invoices.Add(invoice);
