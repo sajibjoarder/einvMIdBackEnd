@@ -34,7 +34,7 @@ namespace enInvBackEnd.Controllers
                 string token = GenerateResetToken(user.Email);
 
                 // Send email with the reset link
-                string resetUrl = $"https://yourfrontend.com/reset-password?token={token}";
+                string resetUrl = $"https://einv.zam.asia/reset-password?token={token}";
                 await SendPasswordResetEmail(user.Email, user.Nname, resetUrl);
 
                 return Ok(new { message = "Password reset email sent." });
@@ -123,7 +123,7 @@ namespace enInvBackEnd.Controllers
             {
                 // Email sender details (same as referenced page)
                 string senderEmail = "sajibjoarder@gmail.com";
-                string senderPassword = "cxts vuqm zrho blut"; // Google App Password
+                string senderPassword = "epyn dxuh hgev uuqk"; // Google App Password
 
                 var message = new MimeMessage();
                 message.From.Add(new MailboxAddress("Math Society", senderEmail));
