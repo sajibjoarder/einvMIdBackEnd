@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using enInvBackEnd.DataContext;
+﻿using enInvBackEnd.DataContext;
 using enInvBackEnd.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Xml;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Xml;
 
 namespace enInvBackEnd.Controllers
 {
@@ -22,33 +23,49 @@ namespace enInvBackEnd.Controllers
             if (string.IsNullOrWhiteSpace(invoiceId))
                 return BadRequest("invoiceId query parameter is required");
 
-            using (var _context = new EninvContext())
+            await using var context = new EninvContext();
+
+            // ♦ 1.  Grab the row and map to DTO
+            var doc = await context.Invoices
+                                       .AsNoTracking()
+                                       .Where(i => i.InvoiceId == invoiceId)
+                                       .FirstOrDefaultAsync();
+
+            if (doc == null)
+                return NotFound($"No invoice found with InvoiceId: {invoiceId}");
+
+            if (string.IsNullOrWhiteSpace(doc.Path) || !System.IO.File.Exists(doc.Path))
+                return NotFound("Invoice XML file not found at the specified path.");
+
+            // ♦ 2.  Convert the XML to a JObject (or keep as string)
+            var xmlContent = await System.IO.File.ReadAllTextAsync(doc.Path);
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlContent);
+            string xmlJson = JsonConvert.SerializeXmlNode(xmlDoc, Newtonsoft.Json.Formatting.Indented, true);
+
+            // ♦ 3.  Shape the outgoing object
+            var response = new
             {
-                var doc = await _context.Invoices.Where(i => i.InvoiceId == invoiceId).FirstOrDefaultAsync();
-                if (doc == null)
+                doc = new 
                 {
-                    return NotFound($"No invoice found with InvoiceId: {invoiceId}");
-                }
+                    Id = doc.Id,
+                    TimeSubmitted = doc.TimeSummitted,   // keep original casing if you like
+                    Type = doc.Type,
+                    Status = doc.Ststus,
+                    ResponseDetails = doc.RespososeDetails,
+                    ResponseCode = doc.ResposeCode,
+                    CompanyId = doc.CompanyId,
+                    InvoiceId = doc.InvoiceId,
+                    SubmissionId = doc.SubmissionId,
+                    DocId = doc.DocId
+                },
+                Xml = xmlJson
+            };
 
-                if (string.IsNullOrWhiteSpace(doc.Path) || !System.IO.File.Exists(doc.Path))
-                {
-                    return NotFound("Invoice XML file not found at the specified path.");
-                }
-
-                try
-                {
-                    var xmlContent = await System.IO.File.ReadAllTextAsync(doc.Path);
-                    var xmlDoc = new XmlDocument();
-                    xmlDoc.LoadXml(xmlContent);
-                    string json = JsonConvert.SerializeXmlNode(xmlDoc, Newtonsoft.Json.Formatting.Indented, true);
-                    return Content(json, "application/json");
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Error processing XML file: {ex.Message}");
-                }
-            }
+            return Ok(response);       // ASP.NET Core serialises to JSON automatically
         }
+
+
 
         [HttpGet("getInvs")]
         public async Task<IActionResult> SearchInvoicesONly(
@@ -110,7 +127,11 @@ namespace enInvBackEnd.Controllers
                     query = query.Where(i => i.TimeSummitted >= fromDt);
 
                 if (!string.IsNullOrWhiteSpace(toDate) && DateTime.TryParse(toDate, out var toDt))
+                {
+                    toDt = toDt.AddDays(1);
                     query = query.Where(i => i.TimeSummitted <= toDt);
+                }
+                    
 
                 if (!string.IsNullOrWhiteSpace(status))
                     query = query.Where(i => i.Ststus == status);
