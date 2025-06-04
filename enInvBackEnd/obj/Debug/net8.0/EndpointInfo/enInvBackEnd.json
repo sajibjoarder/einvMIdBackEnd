@@ -444,6 +444,27 @@
         }
       }
     },
+    "/api/Docs/single/docDetails": {
+      "get": {
+        "tags": [
+          "Docs"
+        ],
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Docs/getInvs": {
       "get": {
         "tags": [
