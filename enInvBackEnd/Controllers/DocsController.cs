@@ -69,7 +69,12 @@ namespace enInvBackEnd.Controllers
                     query = query.Where(i => i.TimeSummitted >= fromDt);
 
                 if (!string.IsNullOrWhiteSpace(toDate) && DateTime.TryParse(toDate, out var toDt))
+                {
+                    toDt = toDt.AddDays(1);
                     query = query.Where(i => i.TimeSummitted <= toDt);
+
+                }
+                  
 
                 if (!string.IsNullOrWhiteSpace(status))
                     query = query.Where(i => i.Ststus == status);
