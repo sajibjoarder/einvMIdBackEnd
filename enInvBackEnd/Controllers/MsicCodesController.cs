@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using enInvBackEnd.DataContext;
 using enInvBackEnd.DataModels;
 
-namespace YourProject.Api.Controllers
+namespace enInvBackEnd.Api.Controllers
 {
     /// <summary>
     /// Exposes MSIC codes (Malaysia Standard Industrial Classification) to callers.

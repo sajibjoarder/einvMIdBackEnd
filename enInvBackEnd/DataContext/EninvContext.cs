@@ -32,6 +32,10 @@ public partial class EninvContext : DbContext
 
     public virtual DbSet<MsicCode> MsicCodes { get; set; }
 
+    public virtual DbSet<Product> Products { get; set; }
+
+    public virtual DbSet<Uom> Uoms { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserType> UserTypes { get; set; }
@@ -306,9 +310,40 @@ public partial class EninvContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("id");
             entity.Property(e => e.Code).HasColumnName("code");
+            entity.Property(e => e.CompanyId).HasColumnName("companyId");
             entity.Property(e => e.Name)
                 .HasColumnType("character varying")
                 .HasColumnName("name");
+        });
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.HasKey(e => e.ProductId).HasName("Products_pkey");
+
+            entity.Property(e => e.ProductId).ValueGeneratedNever();
+            entity.Property(e => e.ItemClassificationCode).HasColumnType("character varying");
+            entity.Property(e => e.ProductName).HasColumnType("character varying");
+            entity.Property(e => e.Uom)
+                .HasColumnType("character varying")
+                .HasColumnName("UOM");
+        });
+
+        modelBuilder.Entity<Uom>(entity =>
+        {
+            entity.HasKey(e => e.Uomif).HasName("UOM_pkey");
+
+            entity.ToTable("UOM");
+
+            entity.Property(e => e.Uomif)
+                .ValueGeneratedNever()
+                .HasColumnName("UOMif");
+            entity.Property(e => e.CompanyId).HasColumnName("companyId");
+            entity.Property(e => e.UomName)
+                .HasColumnType("character varying")
+                .HasColumnName("uomName");
+            entity.Property(e => e.UomType)
+                .HasColumnType("character varying")
+                .HasColumnName("uomType");
         });
 
         modelBuilder.Entity<User>(entity =>

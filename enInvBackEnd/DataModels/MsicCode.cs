@@ -10,4 +10,6 @@ public partial class MsicCode
     public int? Code { get; set; }
 
     public string? Name { get; set; }
+
+    public Guid? CompanyId { get; set; }
 }
