@@ -1233,16 +1233,6 @@
         "tags": [
           "Uom"
         ],
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1367,16 +1357,6 @@
       "post": {
         "tags": [
           "Uom"
-        ],
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
         ],
         "requestBody": {
           "content": {
@@ -3590,22 +3570,17 @@
       "Uom": {
         "type": "object",
         "properties": {
-          "uomif": {
-            "type": "string",
-            "format": "uuid"
-          },
           "uomName": {
             "type": "string",
             "nullable": true
           },
-          "uomType": {
+          "uomValue": {
             "type": "string",
             "nullable": true
           },
-          "companyId": {
+          "uomId": {
             "type": "string",
-            "format": "uuid",
-            "nullable": true
+            "format": "uuid"
           }
         },
         "additionalProperties": false

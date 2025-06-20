@@ -5,11 +5,9 @@ namespace enInvBackEnd.DataModels;
 
 public partial class Uom
 {
-    public Guid Uomif { get; set; }
-
     public string? UomName { get; set; }
 
-    public string? UomType { get; set; }
+    public string? UomValue { get; set; }
 
-    public Guid? CompanyId { get; set; }
+    public Guid UomId { get; set; }
 }

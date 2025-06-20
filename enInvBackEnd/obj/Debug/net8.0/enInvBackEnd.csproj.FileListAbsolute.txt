@@ -394,6 +394,7 @@ C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\ne
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\enInvBackEnd.pdb
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\BCrypt.Net-Next.dll
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\CsvHelper.dll
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\Humanizer.dll
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\MailKit.dll
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
@@ -509,4 +510,3 @@ C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\ne
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\enInvBackEnd.pdb
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\enInvBackEnd.genruntimeconfig.cache
 C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\obj\Debug\net8.0\ref\enInvBackEnd.dll
-C:\Users\sajib\Downloads\einvMIdBackEnd\einvMIdBackEnd\enInvBackEnd\bin\Debug\net8.0\CsvHelper.dll

@@ -11,12 +11,10 @@ namespace enInvBackEnd.Controllers
     public class UomController : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetAll([FromQuery] Guid? companyId = null)
+        public IActionResult GetAll()
         {
             using var db = new EninvContext();
-            var q = db.Uoms.AsQueryable();
-            if (companyId != null) q = q.Where(u => u.CompanyId == companyId);
-            return Ok(q.ToList());
+            return Ok(db.Uoms.ToList());
         }
 
         [HttpGet("{id}")]
@@ -31,26 +29,25 @@ namespace enInvBackEnd.Controllers
         public IActionResult Create([FromBody] Uom uom)
         {
             if (uom == null) return BadRequest();
-            uom.Uomif = Guid.NewGuid();
+            uom.UomId = Guid.NewGuid();
 
             using var db = new EninvContext();
             db.Uoms.Add(uom);
             db.SaveChanges();
-            return CreatedAtAction(nameof(Get), new { id = uom.Uomif }, uom);
+            return CreatedAtAction(nameof(Get), new { id = uom.UomId }, uom);
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody] Uom updated)
         {
-            if (updated == null || id != updated.Uomif) return BadRequest();
+            if (updated == null || id != updated.UomId) return BadRequest();
 
             using var db = new EninvContext();
             var u = db.Uoms.Find(id);
             if (u == null) return NotFound();
 
             u.UomName = updated.UomName;
-            u.UomType = updated.UomType;
-            u.CompanyId = updated.CompanyId;
+            u.UomValue = updated.UomValue;
             db.SaveChanges();
             return NoContent();
         }
@@ -68,7 +65,7 @@ namespace enInvBackEnd.Controllers
 
         [HttpPost("bulk-upload")]
         [Consumes("multipart/form-data")]
-        public IActionResult BulkUpload(IFormFile file, [FromQuery] Guid companyId)
+        public IActionResult BulkUpload(IFormFile file)
         {
             if (file == null || file.Length == 0) return BadRequest("No file uploaded.");
 
@@ -81,8 +78,7 @@ namespace enInvBackEnd.Controllers
 
             foreach (var u in list)
             {
-                u.Uomif = Guid.NewGuid();
-                u.CompanyId = companyId;
+                u.UomId = Guid.NewGuid();
             }
 
             using var db = new EninvContext();

@@ -330,20 +330,19 @@ public partial class EninvContext : DbContext
 
         modelBuilder.Entity<Uom>(entity =>
         {
-            entity.HasKey(e => e.Uomif).HasName("UOM_pkey");
+            entity.HasKey(e => e.UomId).HasName("UOM_pkey");
 
             entity.ToTable("UOM");
 
-            entity.Property(e => e.Uomif)
+            entity.Property(e => e.UomId)
                 .ValueGeneratedNever()
-                .HasColumnName("UOMif");
-            entity.Property(e => e.CompanyId).HasColumnName("companyId");
+                .HasColumnName("uomId");
             entity.Property(e => e.UomName)
                 .HasColumnType("character varying")
                 .HasColumnName("uomName");
-            entity.Property(e => e.UomType)
+            entity.Property(e => e.UomValue)
                 .HasColumnType("character varying")
-                .HasColumnName("uomType");
+                .HasColumnName("Uom_value");
         });
 
         modelBuilder.Entity<User>(entity =>
