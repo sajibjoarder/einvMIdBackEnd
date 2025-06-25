@@ -3275,11 +3275,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\enInvBackEnd.csproj",
+      "projectUniqueName": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\enInvBackEnd.csproj",
       "projectName": "enInvBackEnd",
-      "projectPath": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\enInvBackEnd.csproj",
+      "projectPath": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\enInvBackEnd.csproj",
       "packagesPath": "C:\\Users\\sajib\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sajib\\Downloads\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\obj\\",
+      "outputPath": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -34,6 +34,10 @@ public partial class EninvContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<Receipt> Receipts { get; set; }
+
+    public virtual DbSet<ReceiptItem> ReceiptItems { get; set; }
+
     public virtual DbSet<Uom> Uoms { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -326,6 +330,82 @@ public partial class EninvContext : DbContext
             entity.Property(e => e.Uom)
                 .HasColumnType("character varying")
                 .HasColumnName("UOM");
+        });
+
+        modelBuilder.Entity<Receipt>(entity =>
+        {
+            entity.HasKey(e => e.ReceiptId).HasName("receipt_pkey");
+
+            entity.ToTable("receipt");
+
+            entity.HasIndex(e => e.ReceiptNumber, "receipt_receipt_number_key").IsUnique();
+
+            entity.Property(e => e.ReceiptId)
+                .ValueGeneratedNever()
+                .HasColumnName("receipt_id");
+            entity.Property(e => e.BuyerAddress).HasColumnName("buyer_address");
+            entity.Property(e => e.BuyerName)
+                .HasMaxLength(255)
+                .HasColumnName("buyer_name");
+            entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.DateOfIssue).HasColumnName("date_of_issue");
+            entity.Property(e => e.Discount)
+                .HasPrecision(12, 2)
+                .HasDefaultValueSql("0.00")
+                .HasColumnName("discount");
+            entity.Property(e => e.PaymentMethod)
+                .HasMaxLength(50)
+                .HasColumnName("payment_method");
+            entity.Property(e => e.PaymentReferenceId)
+                .HasMaxLength(100)
+                .HasColumnName("payment_reference_id");
+            entity.Property(e => e.ReceiptNumber)
+                .HasMaxLength(50)
+                .HasColumnName("receipt_number");
+            entity.Property(e => e.SellerAddress).HasColumnName("seller_address");
+            entity.Property(e => e.SellerContact)
+                .HasMaxLength(100)
+                .HasColumnName("seller_contact");
+            entity.Property(e => e.SellerLogoUrl).HasColumnName("seller_logo_url");
+            entity.Property(e => e.SellerName)
+                .HasMaxLength(255)
+                .HasColumnName("seller_name");
+            entity.Property(e => e.Subtotal)
+                .HasPrecision(12, 2)
+                .HasColumnName("subtotal");
+            entity.Property(e => e.Tax)
+                .HasPrecision(12, 2)
+                .HasDefaultValueSql("0.00")
+                .HasColumnName("tax");
+            entity.Property(e => e.TotalAmount)
+                .HasPrecision(12, 2)
+                .HasColumnName("total_amount");
+        });
+
+        modelBuilder.Entity<ReceiptItem>(entity =>
+        {
+            entity.HasKey(e => e.ItemId).HasName("receipt_items_pkey");
+
+            entity.ToTable("receipt_items");
+
+            entity.Property(e => e.ItemId)
+                .ValueGeneratedNever()
+                .HasColumnName("item_id");
+            entity.Property(e => e.ItemDescription).HasColumnName("item_description");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.ReceiptId).HasColumnName("receipt_id");
+            entity.Property(e => e.UnitPrice)
+                .HasPrecision(12, 2)
+                .HasColumnName("unit_price");
+
+            entity.HasOne(d => d.Receipt).WithMany(p => p.ReceiptItems)
+                .HasForeignKey(d => d.ReceiptId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("receipt_items_receipt_id_fkey");
         });
 
         modelBuilder.Entity<Uom>(entity =>
