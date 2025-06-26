@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace enInvBackEnd.DataModels;
 
@@ -15,5 +16,6 @@ public partial class ReceiptItem
 
     public decimal UnitPrice { get; set; }
 
+    [JsonIgnore]
     public virtual Receipt? Receipt { get; set; }
 }

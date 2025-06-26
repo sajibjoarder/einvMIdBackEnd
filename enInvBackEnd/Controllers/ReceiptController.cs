@@ -91,6 +91,13 @@ namespace enInvBackEnd.Controllers
             if (receipt == null || receipt.ReceiptItems == null)
                 return BadRequest();
 
+            using var db = new EninvContext();
+
+            // Check for duplicate ReceiptNumber
+            bool exists = await db.Receipts.AnyAsync(r => r.ReceiptNumber == receipt.ReceiptNumber);
+            if (exists)
+                return Conflict(new { message = "A receipt with this ReceiptNumber already exists." });
+
             receipt.ReceiptId = Guid.NewGuid();
             receipt.CreatedAt = DateTime.Now;
 
@@ -100,7 +107,6 @@ namespace enInvBackEnd.Controllers
                 item.ReceiptId = receipt.ReceiptId;
             }
 
-            using var db = new EninvContext();
             db.Receipts.Add(receipt);
             await db.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = receipt.ReceiptId }, receipt);

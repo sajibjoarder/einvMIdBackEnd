@@ -1155,6 +1155,47 @@
         }
       }
     },
+    "/api/Receipt": {
+      "get": {
+        "tags": [
+          "Receipt"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Receipt"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Receipt"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Receipt"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Receipt"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Receipt/{id}": {
       "get": {
         "tags": [
@@ -1291,8 +1332,8 @@
         }
       }
     },
-    "/api/Receipt": {
-      "post": {
+    "/api/Receipt/update-status": {
+      "patch": {
         "tags": [
           "Receipt"
         ],
@@ -1300,17 +1341,26 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Receipt"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ReceiptUpdateModel"
+                }
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Receipt"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ReceiptUpdateModel"
+                }
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Receipt"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ReceiptUpdateModel"
+                }
               }
             }
           }
@@ -3573,6 +3623,19 @@
             "format": "uuid",
             "nullable": true
           },
+          "submitted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "docid": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "docType": {
+            "type": "string",
+            "nullable": true
+          },
           "receiptItems": {
             "type": "array",
             "items": {
@@ -3606,9 +3669,29 @@
           "unitPrice": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReceiptUpdateModel": {
+        "type": "object",
+        "properties": {
+          "receiptId": {
+            "type": "string",
+            "format": "uuid"
           },
-          "receipt": {
-            "$ref": "#/components/schemas/Receipt"
+          "submitted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "docid": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "docType": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

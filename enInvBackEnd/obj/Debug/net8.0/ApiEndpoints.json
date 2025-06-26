@@ -677,6 +677,16 @@
   },
   {
     "ContainingType": "enInvBackEnd.Controllers.ReceiptController",
+    "Method": "GetAll",
+    "RelativePath": "api/Receipt",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "enInvBackEnd.Controllers.ReceiptController",
     "Method": "Create",
     "RelativePath": "api/Receipt",
     "HttpMethod": "POST",
@@ -777,6 +787,22 @@
         "Name": "endDate",
         "Type": "System.DateOnly",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "enInvBackEnd.Controllers.ReceiptController",
+    "Method": "BulkUpdateStatus",
+    "RelativePath": "api/Receipt/update-status",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updates",
+        "Type": "System.Collections.Generic.List\u00601[[enInvBackEnd.ViewModels.ReceiptUpdateModel, enInvBackEnd, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
