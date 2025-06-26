@@ -56,7 +56,7 @@
               "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\ReceiptController.cs",
               "ToolTip": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\ReceiptController.cs",
               "RelativeToolTip": "enInvBackEnd\\Controllers\\ReceiptController.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAA1wG4AAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAADAAAAAAAAAAAAAowEAAAABNAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-26T07:03:55.88Z",
               "EditorCaption": ""
@@ -71,8 +71,7 @@
               "RelativeToolTip": "enInvBackEnd\\DataModels\\Receipt.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-26T08:15:31.973Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-26T08:15:31.973Z"
             },
             {
               "$type": "Document",
@@ -84,8 +83,7 @@
               "RelativeToolTip": "enInvBackEnd\\DataModels\\ReceiptItem.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-26T08:18:48.412Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-26T08:18:48.412Z"
             }
           ]
         }
