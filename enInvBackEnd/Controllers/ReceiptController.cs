@@ -85,7 +85,7 @@ namespace enInvBackEnd.Controllers
             if (receipt == null || receipt.ReceiptItems == null) return BadRequest();
 
             receipt.ReceiptId = Guid.NewGuid();
-            receipt.CreatedAt = DateTime.UtcNow;
+            receipt.CreatedAt = DateTime.Now;
 
             foreach (var item in receipt.ReceiptItems)
             {
