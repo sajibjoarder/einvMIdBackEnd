@@ -62,27 +62,35 @@ namespace enInvBackEnd.Controllers
             return receipt is null ? NotFound() : Ok(receipt);
         }
 
-        // GET: api/Receipt/range?startDate=yyyy-mm-dd&endDate=yyyy-mm-dd
+        // GET: api/Receipt/range?startDate=yyyy-mm-dd&endDate=yyyy-mm-dd&companyId=guid
         [HttpGet("range")]
-        public async Task<IActionResult> GetByDateRange([FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate)
+        public async Task<IActionResult> GetByDateRange([FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate, [FromQuery] Guid? companyId)
         {
             using var db = new EninvContext();
-            var receipts = await db.Receipts
-                                   .Where(r => r.DateOfIssue >= startDate && r.DateOfIssue <= endDate)
-                                   .ToListAsync();
+            var query = db.Receipts
+                          .Where(r => r.DateOfIssue >= startDate && r.DateOfIssue <= endDate);
+
+            if (companyId.HasValue)
+                query = query.Where(r => r.CompanyId == companyId);
+
+            var receipts = await query.ToListAsync();
             return Ok(receipts);
         }
 
-        // GET: api/Receipt/date?date=yyyy-mm-dd
+        // GET: api/Receipt/date?date=yyyy-mm-dd&companyId=guid
         [HttpGet("date")]
-        public async Task<IActionResult> GetBySingleDate([FromQuery] DateOnly date)
+        public async Task<IActionResult> GetBySingleDate([FromQuery] DateOnly date, [FromQuery] Guid? companyId)
         {
             using var db = new EninvContext();
-            var receipts = await db.Receipts
-                                   .Where(r => r.DateOfIssue == date)
-                                   .ToListAsync();
+            var query = db.Receipts.Where(r => r.DateOfIssue == date);
+
+            if (companyId.HasValue)
+                query = query.Where(r => r.CompanyId == companyId);
+
+            var receipts = await query.ToListAsync();
             return Ok(receipts);
         }
+
 
         // POST: api/Receipt
         [HttpPost]
