@@ -357,6 +357,7 @@ public partial class EninvContext : DbContext
                 .HasPrecision(12, 2)
                 .HasDefaultValueSql("0.00")
                 .HasColumnName("discount");
+            entity.Property(e => e.DocType).HasColumnType("character varying");
             entity.Property(e => e.PaymentMethod)
                 .HasMaxLength(50)
                 .HasColumnName("payment_method");
@@ -374,6 +375,7 @@ public partial class EninvContext : DbContext
             entity.Property(e => e.SellerName)
                 .HasMaxLength(255)
                 .HasColumnName("seller_name");
+            entity.Property(e => e.Submitted).HasDefaultValue(false);
             entity.Property(e => e.Subtotal)
                 .HasPrecision(12, 2)
                 .HasColumnName("subtotal");

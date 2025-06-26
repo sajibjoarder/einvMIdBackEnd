@@ -39,5 +39,11 @@ public partial class Receipt
 
     public Guid? CompanyId { get; set; }
 
+    public bool? Submitted { get; set; }
+
+    public Guid? Docid { get; set; }
+
+    public string? DocType { get; set; }
+
     public virtual ICollection<ReceiptItem> ReceiptItems { get; set; } = new List<ReceiptItem>();
 }
