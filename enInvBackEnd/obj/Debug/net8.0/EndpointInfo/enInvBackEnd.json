@@ -1155,47 +1155,6 @@
         }
       }
     },
-    "/api/Receipt": {
-      "get": {
-        "tags": [
-          "Receipt"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Receipt"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Receipt"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Receipt"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Receipt"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/Receipt/{id}": {
       "get": {
         "tags": [
@@ -1341,6 +1300,37 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Receipt": {
+      "post": {
+        "tags": [
+          "Receipt"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Receipt"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Receipt"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Receipt"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"

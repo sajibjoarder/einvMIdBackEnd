@@ -22,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -45,10 +45,6 @@
               "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
-            },
-            {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "ReceiptController.cs",
@@ -56,7 +52,7 @@
               "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\ReceiptController.cs",
               "ToolTip": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\ReceiptController.cs",
               "RelativeToolTip": "enInvBackEnd\\Controllers\\ReceiptController.cs",
-              "ViewState": "AgIAADAAAAAAAAAAAAAowEAAAABNAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-26T07:03:55.88Z",
               "EditorCaption": ""

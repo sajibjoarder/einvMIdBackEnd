@@ -12,13 +12,13 @@ namespace enInvBackEnd.Controllers
     public class ReceiptController : ControllerBase
     {
         // GET: api/Receipt
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            using var db = new EninvContext();
-            var receipts = await db.Receipts.ToListAsync();
-            return Ok(receipts);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> GetAll()
+        //{
+        //    using var db = new EninvContext();
+        //    var receipts = await db.Receipts.ToListAsync();
+        //    return Ok(receipts);
+        //}
 
         // GET: api/Receipt/{id}
         [HttpGet("{id}")]

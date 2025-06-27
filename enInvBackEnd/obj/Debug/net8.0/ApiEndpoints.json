@@ -677,16 +677,6 @@
   },
   {
     "ContainingType": "enInvBackEnd.Controllers.ReceiptController",
-    "Method": "GetAll",
-    "RelativePath": "api/Receipt",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "enInvBackEnd.Controllers.ReceiptController",
     "Method": "Create",
     "RelativePath": "api/Receipt",
     "HttpMethod": "POST",
