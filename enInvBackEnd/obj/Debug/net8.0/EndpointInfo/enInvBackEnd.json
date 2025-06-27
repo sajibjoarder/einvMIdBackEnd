@@ -3703,9 +3703,6 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
-          },
-          "receipt": {
-            "$ref": "#/components/schemas/Receipt"
           }
         },
         "additionalProperties": false
