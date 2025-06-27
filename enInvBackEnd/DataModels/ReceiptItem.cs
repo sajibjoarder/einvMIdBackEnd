@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace enInvBackEnd.DataModels;
 
@@ -15,6 +15,8 @@ public partial class ReceiptItem
     public int Quantity { get; set; }
 
     public decimal UnitPrice { get; set; }
+
+    public Guid? ProductId { get; set; }
 
     [JsonIgnore]
     public virtual Receipt? Receipt { get; set; }

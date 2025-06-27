@@ -38,6 +38,8 @@ public partial class EninvContext : DbContext
 
     public virtual DbSet<ReceiptItem> ReceiptItems { get; set; }
 
+    public virtual DbSet<ReceiptItemDetail> ReceiptItemDetails { get; set; }
+
     public virtual DbSet<Uom> Uoms { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -398,6 +400,7 @@ public partial class EninvContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("item_id");
             entity.Property(e => e.ItemDescription).HasColumnName("item_description");
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.ReceiptId).HasColumnName("receipt_id");
             entity.Property(e => e.UnitPrice)
@@ -408,6 +411,27 @@ public partial class EninvContext : DbContext
                 .HasForeignKey(d => d.ReceiptId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("receipt_items_receipt_id_fkey");
+        });
+
+        modelBuilder.Entity<ReceiptItemDetail>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("receipt_item_details");
+
+            entity.Property(e => e.ItemClassificationCode).HasColumnType("character varying");
+            entity.Property(e => e.ItemDescription).HasColumnName("item_description");
+            entity.Property(e => e.ItemId).HasColumnName("item_id");
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.ProductName).HasColumnType("character varying");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.ReceiptId).HasColumnName("receipt_id");
+            entity.Property(e => e.UnitPrice)
+                .HasPrecision(12, 2)
+                .HasColumnName("unit_price");
+            entity.Property(e => e.Uom)
+                .HasColumnType("character varying")
+                .HasColumnName("UOM");
         });
 
         modelBuilder.Entity<Uom>(entity =>

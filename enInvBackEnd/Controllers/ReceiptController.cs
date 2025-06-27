@@ -54,7 +54,8 @@ namespace enInvBackEnd.Controllers
                                           i.ItemId,
                                           i.ItemDescription,
                                           i.Quantity,
-                                          i.UnitPrice
+                                          i.UnitPrice,
+                                          i.ProductId
                                       })
                                   })
                                   .FirstOrDefaultAsync();
@@ -193,6 +194,18 @@ namespace enInvBackEnd.Controllers
             await db.SaveChangesAsync();
             return Ok(new { updated = receipts.Count });
         }
+
+        // GET: api/Receipt/items-details/{receiptId}
+        [HttpGet("items-details/{receiptId}")]
+        public async Task<IActionResult> GetReceiptItemDetails(Guid receiptId)
+        {
+            using var db = new EninvContext();
+            var items = await db.ReceiptItemDetails.Where(i => i.ReceiptId == receiptId).ToListAsync();
+
+            return Ok(items);
+        }
+
+
 
     }
 }

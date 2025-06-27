@@ -1378,6 +1378,29 @@
         }
       }
     },
+    "/api/Receipt/items-details/{receiptId}": {
+      "get": {
+        "tags": [
+          "Receipt"
+        ],
+        "parameters": [
+          {
+            "name": "receiptId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/SelfBilledInvoice/submit/{company_id}": {
       "post": {
         "tags": [
@@ -3675,6 +3698,14 @@
           "unitPrice": {
             "type": "number",
             "format": "double"
+          },
+          "productId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "receipt": {
+            "$ref": "#/components/schemas/Receipt"
           }
         },
         "additionalProperties": false

@@ -767,6 +767,22 @@
   },
   {
     "ContainingType": "enInvBackEnd.Controllers.ReceiptController",
+    "Method": "GetReceiptItemDetails",
+    "RelativePath": "api/Receipt/items-details/{receiptId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "receiptId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "enInvBackEnd.Controllers.ReceiptController",
     "Method": "GetByDateRange",
     "RelativePath": "api/Receipt/range",
     "HttpMethod": "GET",
