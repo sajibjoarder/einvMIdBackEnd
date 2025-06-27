@@ -191,6 +191,22 @@
   },
   {
     "ContainingType": "enInvBackEnd.Controllers.CustomerController",
+    "Method": "GetCustomerByTin",
+    "RelativePath": "api/Customer/get-customer-by-tin/{tin}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tin",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "enInvBackEnd.Controllers.CustomerController",
     "Method": "GetCustomer",
     "RelativePath": "api/Customer/get-customer/{customerId}",
     "HttpMethod": "GET",

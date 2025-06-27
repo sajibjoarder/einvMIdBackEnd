@@ -137,5 +137,27 @@ namespace enInvBackEnd.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        // GET: api/Customer/get-customer-by-tin/{tin}
+        [HttpGet("get-customer-by-tin/{tin}")]
+        public IActionResult GetCustomerByTin(string tin)
+        {
+            try
+            {
+                using (var db = new EninvContext())
+                {
+                    var customer = db.Customers.FirstOrDefault(c => c.Tin == tin);
+                    if (customer == null)
+                        return NotFound("Customer not found with given TIN.");
+
+                    return Ok(customer);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
     }
 }

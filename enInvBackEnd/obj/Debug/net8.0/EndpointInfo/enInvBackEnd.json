@@ -423,6 +423,28 @@
         }
       }
     },
+    "/api/Customer/get-customer-by-tin/{tin}": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "parameters": [
+          {
+            "name": "tin",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Docs/single": {
       "get": {
         "tags": [
