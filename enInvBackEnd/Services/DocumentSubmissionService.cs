@@ -22,7 +22,7 @@ namespace enInvBackEnd.Services
             _http = http;
         }
 
-        public async Task<HttpResponseMessage> SubmitXmlAsync(string xmlFilePath, Guid companyId, string Doctype, string? id)
+        public async Task<HttpResponseMessage> SubmitXmlAsync(string xmlFilePath, Guid companyId, string Doctype, string? id, Guid invoiceID)
         {
             // Get token
             var tokenManager = new LhdnTokenManager();
@@ -46,7 +46,7 @@ namespace enInvBackEnd.Services
                 byte[] hashBytes = sha.ComputeHash(Encoding.UTF8.GetBytes(fileContents));
                 sha256 = BitConverter.ToString(hashBytes).Replace("-", "");
             }
-            var invoiceID = Guid.NewGuid(); // Generate a new GUID for the invoice ID
+            //var invoiceID = Guid.NewGuid(); // Generate a new GUID for the invoice ID
             // Prepare payload
             var payload = new
             {
@@ -142,13 +142,6 @@ namespace enInvBackEnd.Services
             }
 
             return response;
-
-
-
-
-
-
-
 
 
         }

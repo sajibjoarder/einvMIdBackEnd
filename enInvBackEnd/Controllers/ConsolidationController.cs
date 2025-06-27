@@ -51,10 +51,15 @@ namespace enInvBackEnd.Controllers
                 xmlDoc.Save(fs);
 
             /* ---------- submit ---------- */
-            HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(fullPath, company_id, "Consolidation",dto.Id); // example tax-ID
+
+            var invoiceID = Guid.NewGuid(); // Generate a new GUID for the invoice ID
+
+            HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(fullPath, company_id, "Consolidation",dto.Id, invoiceID); // example tax-ID
+
+
             string respBody = await resp.Content.ReadAsStringAsync();
 
-            return Created(string.Empty, new { fileName, fullPath, respBody });
+            return Created(string.Empty, new { fileName, fullPath, respBody,invoiceID });
         }
     }
 

@@ -61,14 +61,11 @@ namespace enInvBackEnd.Controllers
                 xml.Save(fs);
 
             /* ----- submit to IRBM / LHDN ----- */
-            HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(
-                                            fullPath,
-                                            company_id,
-                                            "CreditNote",
-                                            dto.Id);
+            var CreaditNoteID = Guid.NewGuid(); // Generate a new GUID for the invoice ID in db
+            HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(fullPath,company_id,"CreditNote",dto.Id, CreaditNoteID);
 
             string respBody = await resp.Content.ReadAsStringAsync();
-            return Created(string.Empty, new { fileName, fullPath, respBody });
+            return Created(string.Empty, new { fileName, fullPath, respBody,CreaditNoteID });
         }
     }
 

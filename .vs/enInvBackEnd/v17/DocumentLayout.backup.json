@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|h:\\einvmidbackend\\einvmidbackend\\eninvbackend\\controllers\\receiptcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\controllers\\receiptcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|h:\\einvmidbackend\\einvmidbackend\\eninvbackend\\controllers\\selfbilledinvoicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\controllers\\selfbilledinvoicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|h:\\einvmidbackend\\einvmidbackend\\eninvbackend\\datamodels\\receiptitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\datamodels\\receiptitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|h:\\einvmidbackend\\einvmidbackend\\eninvbackend\\controllers\\creditnotescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\controllers\\creditnotescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|h:\\einvmidbackend\\einvmidbackend\\eninvbackend\\datamodels\\receipt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\datamodels\\receipt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|h:\\einvmidbackend\\einvmidbackend\\eninvbackend\\controllers\\invoicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\controllers\\invoicescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|h:\\einvmidbackend\\einvmidbackend\\eninvbackend\\controllers\\consolidationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\controllers\\consolidationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|h:\\einvmidbackend\\einvmidbackend\\eninvbackend\\services\\documentsubmissionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE2ED87B-32A1-4571-B112-FF6A6E8BC38C}|enInvBackEnd\\enInvBackEnd.csproj|solutionrelative:eninvbackend\\services\\documentsubmissionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,8 +30,73 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SelfBilledInvoiceController.cs",
+              "DocumentMoniker": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\SelfBilledInvoiceController.cs",
+              "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\SelfBilledInvoiceController.cs",
+              "ToolTip": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\SelfBilledInvoiceController.cs",
+              "RelativeToolTip": "enInvBackEnd\\Controllers\\SelfBilledInvoiceController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAALABAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T09:15:13.238Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "InvoicesController.cs",
+              "DocumentMoniker": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\InvoicesController.cs",
+              "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\InvoicesController.cs",
+              "ToolTip": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\InvoicesController.cs",
+              "RelativeToolTip": "enInvBackEnd\\Controllers\\InvoicesController.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAAAEkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T09:13:41.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CreditNotesController.cs",
+              "DocumentMoniker": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\CreditNotesController.cs",
+              "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\CreditNotesController.cs",
+              "ToolTip": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\CreditNotesController.cs",
+              "RelativeToolTip": "enInvBackEnd\\Controllers\\CreditNotesController.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAAAD8AAABfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T09:10:47.731Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ConsolidationController.cs",
+              "DocumentMoniker": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\ConsolidationController.cs",
+              "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\ConsolidationController.cs",
+              "ToolTip": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\ConsolidationController.cs",
+              "RelativeToolTip": "enInvBackEnd\\Controllers\\ConsolidationController.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAxwDYAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T08:50:45.576Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DocumentSubmissionService.cs",
+              "DocumentMoniker": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Services\\DocumentSubmissionService.cs",
+              "RelativeDocumentMoniker": "enInvBackEnd\\Services\\DocumentSubmissionService.cs",
+              "ToolTip": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Services\\DocumentSubmissionService.cs",
+              "RelativeToolTip": "enInvBackEnd\\Services\\DocumentSubmissionService.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABgAAACDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-27T08:55:57.435Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
@@ -43,43 +116,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ReceiptController.cs",
-              "DocumentMoniker": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\ReceiptController.cs",
-              "RelativeDocumentMoniker": "enInvBackEnd\\Controllers\\ReceiptController.cs",
-              "ToolTip": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\Controllers\\ReceiptController.cs",
-              "RelativeToolTip": "enInvBackEnd\\Controllers\\ReceiptController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-26T07:03:55.88Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Receipt.cs",
-              "DocumentMoniker": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\DataModels\\Receipt.cs",
-              "RelativeDocumentMoniker": "enInvBackEnd\\DataModels\\Receipt.cs",
-              "ToolTip": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\DataModels\\Receipt.cs",
-              "RelativeToolTip": "enInvBackEnd\\DataModels\\Receipt.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-26T08:15:31.973Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ReceiptItem.cs",
-              "DocumentMoniker": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\DataModels\\ReceiptItem.cs",
-              "RelativeDocumentMoniker": "enInvBackEnd\\DataModels\\ReceiptItem.cs",
-              "ToolTip": "H:\\einvMIdBackEnd\\einvMIdBackEnd\\enInvBackEnd\\DataModels\\ReceiptItem.cs",
-              "RelativeToolTip": "enInvBackEnd\\DataModels\\ReceiptItem.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-26T08:18:48.412Z"
             }
           ]
         }

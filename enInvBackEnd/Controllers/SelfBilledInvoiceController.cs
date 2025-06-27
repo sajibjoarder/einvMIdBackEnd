@@ -47,10 +47,11 @@ namespace enInvBackEnd.Controllers
             await using (var fs = System.IO.File.Create(fullPath))
                 xmlDoc.Save(fs);
 
-            HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(fullPath, company_id, "SelfBilledInvoice",dto.Id);
+            var invoiceID = Guid.NewGuid();
+            HttpResponseMessage resp = await _submissionSvc.SubmitXmlAsync(fullPath, company_id, "SelfBilledInvoice", dto.Id, invoiceID);
             string respBody = await resp.Content.ReadAsStringAsync();
 
-            return Created(string.Empty, new { fileName, fullPath, respBody });
+            return Created(string.Empty, new { fileName, fullPath, respBody, invoiceID });
         }
     }
 

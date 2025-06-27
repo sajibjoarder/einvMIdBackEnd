@@ -58,16 +58,16 @@ namespace enInvBackEnd.Controllers
             }
 
             // inside Create() – after you save fullPath
+            var invoiceID = Guid.NewGuid(); // Generate a new GUID for the invoice ID
 
-
-            HttpResponseMessage resp =await _submissionSvc.SubmitXmlAsync(fullPath ,company_id,"Invoice",dto.Id);
+            HttpResponseMessage resp =await _submissionSvc.SubmitXmlAsync(fullPath ,company_id,"Invoice",dto.Id,invoiceID);
             string respBody = await resp.Content.ReadAsStringAsync();
 
 
 
             /* ---------- Return 201 Created ---------- */
             // Not a public URL, but the absolute path on server
-            return Created(string.Empty, new { fileName, fullPath,respBody });
+            return Created(string.Empty, new { fileName, fullPath,respBody,invoiceID });
         }
 
     }
